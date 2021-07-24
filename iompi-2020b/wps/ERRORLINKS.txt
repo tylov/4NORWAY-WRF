@@ -1,0 +1,3 @@
+metgrid.exe: 
+    ERROR: Cannot combine time-independent data with time-dependent data for field LANDSEA.mask
+    See: https://forum.mmm.ucar.edu/phpBB3/viewtopic.php?t=10003

@@ -1,0 +1,119 @@
+Processing domain 1 of 2
+    NORESM_FIXED
+ Processing 1984-01-01_00
+    IM/NorESM2-MM
+ERROR: Cannot combine time-independent data with time-dependent data for field LANDSEA.mask
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+with errorcode 47156256.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+07-15 16:58:21.999 ---   START_HOUR       = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   START_MINUTE     = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   START_SECOND     = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_YEAR         = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_MONTH        = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_DAY          = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_HOUR         = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_MINUTE       = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   END_SECOND       = 0
+2021-07-15 16:58:21.999 ---                    = 0
+2021-07-15 16:58:21.999 ---   START_DATE       = 1984-01-01_00:00:00
+2021-07-15 16:58:21.999 ---                    = 1984-01-01_00:00:00
+2021-07-15 16:58:21.999 ---   END_DATE         = 1984-01-02_18:00:00
+2021-07-15 16:58:21.999 ---                    = 1984-01-02_18:00:00
+2021-07-15 16:58:22.000 ---   INTERVAL_SECONDS = 21600
+2021-07-15 16:58:22.000 ---   IO_FORM_GEOGRID  = 2
+2021-07-15 16:58:22.000 ---   OPT_OUTPUT_FROM_GEOGRID_PATH = ./
+2021-07-15 16:58:22.000 ---   SUBGRID_RATIO_X  = 1
+2021-07-15 16:58:22.000 ---                    = 1
+2021-07-15 16:58:22.000 ---   SUBGRID_RATIO_Y  = 1
+2021-07-15 16:58:22.000 ---                    = 1
+2021-07-15 16:58:22.000 ---   DEBUG_LEVEL      = 0
+2021-07-15 16:58:22.000 ---   ACTIVE_GRID      = .TRUE.
+2021-07-15 16:58:22.000 ---                    = .TRUE.
+2021-07-15 16:58:22.000 ---   NOCOLONS         = .FALSE.
+2021-07-15 16:58:22.000 --- /
+2021-07-15 16:58:22.000 --- &METGRID
+2021-07-15 16:58:22.000 ---   FG_NAME               = IM/NorESM2-MM
+2021-07-15 16:58:22.000 ---   CONSTANTS_NAME        = NORESM_FIXED
+2021-07-15 16:58:22.000 ---   IO_FORM_METGRID       = 2
+2021-07-15 16:58:22.000 ---   PROCESS_ONLY_BDY      = 0
+2021-07-15 16:58:22.000 ---   OPT_OUTPUT_FROM_METGRID_PATH = ./
+2021-07-15 16:58:22.000 ---   OPT_METGRID_TBL_PATH  = metgrid/
+2021-07-15 16:58:22.000 --- /
+2021-07-15 16:58:22.618 --- Processing domain 1 of 2
+2021-07-15 16:58:22.618 --- Initializing storage module
+2021-07-15 16:58:22.618 --- Opening static input file.
+2021-07-15 16:58:22.671 --- Reading static global attributes.
+2021-07-15 16:58:22.672 --- Read in static field XLAT_M.
+2021-07-15 16:58:22.674 --- Read in static field XLONG_M.
+2021-07-15 16:58:22.675 --- Read in static field XLAT_V.
+2021-07-15 16:58:22.676 --- Read in static field XLONG_V.
+2021-07-15 16:58:22.677 --- Read in static field XLAT_U.
+2021-07-15 16:58:22.678 --- Read in static field XLONG_U.
+2021-07-15 16:58:22.680 --- Read in static field CLAT.
+2021-07-15 16:58:22.681 --- Read in static field CLONG.
+2021-07-15 16:58:22.682 --- Read in static field MAPFAC_M.
+2021-07-15 16:58:22.683 --- Read in static field MAPFAC_V.
+2021-07-15 16:58:22.684 --- Read in static field MAPFAC_U.
+2021-07-15 16:58:22.685 --- Read in static field MAPFAC_MX.
+2021-07-15 16:58:22.686 --- Read in static field MAPFAC_VX.
+2021-07-15 16:58:22.687 --- Read in static field MAPFAC_UX.
+2021-07-15 16:58:22.688 --- Read in static field MAPFAC_MY.
+2021-07-15 16:58:22.689 --- Read in static field MAPFAC_VY.
+2021-07-15 16:58:22.690 --- Read in static field MAPFAC_UY.
+2021-07-15 16:58:22.691 --- Read in static field E.
+2021-07-15 16:58:22.692 --- Read in static field F.
+2021-07-15 16:58:22.693 --- Read in static field SINALPHA.
+2021-07-15 16:58:22.694 --- Read in static field COSALPHA.
+2021-07-15 16:58:22.695 --- Read in static field LANDMASK.
+2021-07-15 16:58:22.696 --- Read in static field XLAT_C.
+2021-07-15 16:58:22.697 --- Read in static field XLONG_C.
+2021-07-15 16:58:22.698 --- Read in static field SINALPHA_U.
+2021-07-15 16:58:22.699 --- Read in static field COSALPHA_U.
+2021-07-15 16:58:22.700 --- Read in static field SINALPHA_V.
+2021-07-15 16:58:22.701 --- Read in static field COSALPHA_V.
+2021-07-15 16:58:22.712 --- Read in static field LANDUSEF.
+2021-07-15 16:58:22.734 --- Read in static field LU_INDEX.
+2021-07-15 16:58:22.735 --- Read in static field HGT_M.
+2021-07-15 16:58:22.736 --- Read in static field SOILTEMP.
+2021-07-15 16:58:22.743 --- Read in static field SOILCTOP.
+2021-07-15 16:58:22.755 --- Read in static field SCT_DOM.
+2021-07-15 16:58:22.762 --- Read in static field SOILCBOT.
+2021-07-15 16:58:22.772 --- Read in static field SCB_DOM.
+2021-07-15 16:58:22.777 --- Read in static field ALBEDO12M.
+2021-07-15 16:58:22.790 --- Read in static field GREENFRAC.
+2021-07-15 16:58:22.804 --- Read in static field LAI12M.
+2021-07-15 16:58:22.813 --- Read in static field SNOALB.
+2021-07-15 16:58:22.815 --- Read in static field SLOPECAT.
+2021-07-15 16:58:22.816 --- Read in static field CON.
+2021-07-15 16:58:22.817 --- Read in static field VAR.
+2021-07-15 16:58:22.818 --- Read in static field OA1.
+2021-07-15 16:58:22.819 --- Read in static field OA2.
+2021-07-15 16:58:22.820 --- Read in static field OA3.
+2021-07-15 16:58:22.821 --- Read in static field OA4.
+2021-07-15 16:58:22.823 --- Read in static field OL1.
+2021-07-15 16:58:22.824 --- Read in static field OL2.
+2021-07-15 16:58:22.825 --- Read in static field OL3.
+2021-07-15 16:58:22.826 --- Read in static field OL4.
+2021-07-15 16:58:22.827 --- Read in static field VAR_SSO.
+2021-07-15 16:58:22.828 --- Read in static field LAKE_DEPTH.
+2021-07-15 16:58:22.874 --- Read in static field URB_PARAM.
+2021-07-15 16:58:22.974 --- Getting input fields from NORESM_FIXED
+2021-07-15 16:58:23.733 --- Processing LANDSEA at level 200100.000000.
+2021-07-15 16:58:23.737 --- Processing SOILHGT at level 200100.000000.
+2021-07-15 16:58:23.743 --- Preparing to process output time 1984-01-01_00
+2021-07-15 16:58:23.743 --- Getting input fields from IM/NorESM2-MM
+2021-07-15 16:58:23.770 --- ERROR: Cannot combine time-independent data with time-dependent data for field LANDSEA.mask

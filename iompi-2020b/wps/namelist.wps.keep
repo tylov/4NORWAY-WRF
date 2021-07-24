@@ -1,0 +1,40 @@
+&share
+ wrf_core = 'ARW',
+ max_dom = 2,
+ start_date = '1984-01-01_00:00:00','1984-01-01_00:00:00','2006-01-01_00:00:00',
+ end_date   = '1985-01-01_18:00:00','1985-01-01_18:00:00','2006-01-01_18:00:00',
+ interval_seconds = 21600,
+ io_form_geogrid = 2
+/
+
+&geogrid
+ parent_id         = 1,     1,    2,
+ parent_grid_ratio = 1,     5,    3,
+ i_parent_start    = 1,    195,   97,
+ j_parent_start    = 1,    120,   200,
+ e_we              = 347,  646,  310,
+ e_sn              = 266,  601,  220,
+ dx                = 0.14,
+ dy                = 0.14,
+ map_proj          = 'lat-lon',
+ pole_lat          = 36.75,
+ pole_lon          = 16.0,
+ ref_lat           = 50.60,
+ ref_lon           = -49.14
+ ref_x             = 10.0,
+ ref_y             = 256,
+ stand_lon         = -31,
+ geog_data_res     = 'gtopo_2m+usgs_lakes+greenfrac_fpar_modis+2m', 'topo_gmted2010_30s+usgs_lakes+greenfrac_fpar_modis+30s', 'topo_gmted2010_30s+usgs_lakes+greenfrac_fpar_modis+30s',
+ geog_data_path    = '/cluster/shared/wrf/geog/'
+/
+
+&ungrib
+ out_format = 'WPS',
+ prefix = 'NorESM2-MM'
+/
+
+&metgrid
+ constants_name = 'NORESM_FIXED',
+ fg_name = 'NorESM2-MM',
+ io_form_metgrid = 2
+/
