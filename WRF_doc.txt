@@ -1,0 +1,103 @@
+WPS / WRF doc
+/////////////
+
+
+WPS
+===
+
+Main programs: geogrid.exe, ungrib.exe, metgrid.exe
+
+Input to the main programs is through the namelist
+file "namelist.wps".  Each main program has an
+exclusive namelist record (named "geogrid", "ungrib",
+or "metgrid", respectively), and the three programs
+have a group record (named "share") that each program
+reads.
+
+geogrid
+-------
+1) Defines the model horizontal domain
+2) Horizontally interpolates static data to the model
+domain
+3) Output conforms to the WRF I/O API
+
+Run geogrid.exe:
+- edit namelist.wps (&share and &geogrid sections)
+- make sure the correct GEOGRID.TBL is used (ls -l geogrid/GEOGRID.TBL*)
+- type 'geogrid.exe' to run
+- check output in geogrid.log
+
+
+
+ungrib
+------
+1) Decodes Grib Edition 1 and 2 data
+2) Uses tables to decide which variables to extract
+3) Supports isobaric and generalized vertical coordinates
+4) Output is in a non-WRF-I/O-API form, referred to as an
+   intermediate format
+
+Run ungrib.exe:
+- edit namelist.wps for start_date and end_date, output file prefix
+  (&share and &ungrib sections)
+- link correct Vtable:
+  ls -l ungrib/Variable_Tables
+  For example, for NCEP GFS (or AVN, FNL) data,
+  ln -sf ungrib/Variable_Tables/Vtable.GFS Vtable
+- link grib data files:
+  link_grib.csh /data-directory/file*
+- type 'ungrib.exe >& ungrib.out' to run
+- check output in ungrib.log and ungrib.out
+
+
+
+metgrid
+-------
+1) Ingest static data and raw meteorological fields
+2) Horizontally interpolate meteorological fields to the
+   model domain
+3) Output conforms to WRF I/O API
+
+First, link up the correct METGRID.TBL
+    ln -sf file-path-to-METGRID.TBL-files/METGRID.TBL METGRID
+    ln -sf WPS/metgrid/METGRID.TBL.ARW METGRID
+
+To produce met_em ... .nc files, run
+    ./metgrid.exe >& metgrid.log
+    tail metgrid.log
+
+Input:
+
+Output:
+    met_em.d02.yyyy-mm...
+    met_em.d01.yyyy-mm...
+
+Run metgrid.exe:
+- edit namelist.wps (&share and &metgrid sections)
+- make sure the correct METGRID.TBL is used (ls -l metgrid/METGRID.TBL*)
+- type 'metgrid.exe' to run
+- check output in metgrid.log
+
+
+
+WRF
+===
+https://www2.mmm.ucar.edu/wrf/users/docs/user_guide_V3/user_guide_V3.9/users_guide_chap5.htm
+
+real.exe
+--------
+Input:
+    namelist.input
+    met_em*
+Output:
+    wrfbody_d01
+    wrfinput_d01
+
+wrf.exe
+-------
+Input:
+    namelist.input
+    wrfbody_d01
+    wrfinput_d01
+Output:
+    wrfout_d01_yyyy-mm...
