@@ -36,9 +36,9 @@ echo -- 5. FRAM: Submit Hybrid_To_Pres_new.ncl script:
 # Output: /cluster/work/users/tylo/noresm2-mm/IM_NorESM/1984/NorESM2-MM:1984-01-01_00
 echo ssh $user@$fram sbatch $fram_work/IM_NorESM/submit2queue.sh $year $fram_work/IM_NorESM/
 
-echo -- 6. FRAM: Copy NCL-script output to BETZY: $fram_work/$ncl_out
+echo -- 6. FRAM: Copy output from NCL-script to BETZY: $fram_work/$ncl_out
 # Output: /cluster/work/users/tylo/noresm2-mm/IM_NorESM/1984/NorESM2-MM:1984-01-01_00
-scp -3 -r $user@$fram:$fram_work/$ncl_out/$year $user@$fram:$betzy_work/$ncl_out/
+echo scp -3 -r $user@$fram:$fram_work/$ncl_out/$year $user@$fram:$betzy_work/$ncl_out/
 
 echo -- 7. BETZY: run metgrid.exe
 # Input: namelist.wps, geo_em.d01, geo_em.d02
