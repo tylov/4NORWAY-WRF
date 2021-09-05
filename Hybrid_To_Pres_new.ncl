@@ -19,16 +19,18 @@ begin
 ; Which CASE are we doing. 
 ;******************************************************************************
 
-CASE = "1985" ; year, override with script argument
-outROOT = "/cluster/work/users/mpo100/IM_NorESM/" ; override
+; PASS AS ARGUMENTS TO SCRIPT: CASE OUTROOT
+;CASE = "1985" ; year, override with script argument
+;OUTROOT = "/cluster/work/users/mpo100/IM_NorESM/" ; override
+;OUTROOT = "/cluster/work/users/tylo/4NORWAY/IM_NorESM"
 
 ;******************************************************************************
 ; Do not change anything below this line
 ;******************************************************************************
 ;;;;;;;;;;;
 ;;;;;;;;;;;
-varsDIR = outROOT+CASE+"_intoNCL/" 
-outDIR = outROOT+"OUTPUT_HIST/"
+varsDIR = OUTROOT+CASE+"_intoNCL/" 
+outDIR = OUTROOT+"OUTPUT_HIST/"
 ;;;;;;;;;;;
 ;;;;;;;;;;;
 
@@ -60,12 +62,12 @@ end if
   in_hus   = addfile(varsDIR+"atmos_hus.nc","r")     ; 6-hourly 3-d Q                   
   in_ps    = addfile(varsDIR+"atmos_ps.nc","r")      ; 6-hourly surface pressure
   in_ts    = addfile(varsDIR+"atmos_ts.nc","r")    ; 6-hourly surface/skin temp !! (monthly in orig. script)
-  in_zsfc  = addfile("/cluster/work/users/mpo100/IM_NorESM/zsfc.nc","r")    ; static surface geopotential        
+  in_zsfc  = addfile("/cluster/projects/nn9280k/4NORWAY/IM_NorESM/zsfc.nc","r")    ; static surface geopotential        
   in_lmask = addfile(varsDIR+"atmos_lmask.nc","r")   ; static land mask
   in_snw   = addfile(varsDIR+"atmos_snw.nc","r")   ; monthly snow water equivalent (SWE) 
   in_mrlsl = addfile(varsDIR+"atmos_mrlsl.nc","r") ; monthly soil moisture 
   in_tsl   = addfile(varsDIR+"atmos_tsl.nc","r")   ; monthly soil temp 
-  in_hy    = addfile("/cluster/work/users/mpo100/IM_NorESM/hybrid.nc","r")      ; hybrid mid-point and interface points (Muralidhar)
+  in_hy    = addfile("/cluster/projects/nn9280k/4NORWAY/IM_NorESM/hybrid.nc","r")      ; hybrid mid-point and interface points (Muralidhar)
   in_sst    = addfile(varsDIR+"atmos_sst.nc","r") 
   in_sic    = addfile(varsDIR+"atmos_sic.nc","r") 
 ;************************************************
