@@ -1,4 +1,15 @@
 Required statuc data/6-hours variables
 
+NorESM data on NIRD:
+/projects/NS9034K/CMIP6/ScenarioMIP/NCC/NorESM2-MM/ssp370/r1i1p1f1
+
 Land mask:
 /projects/NS9034K/CMIP6/ScenarioMIP/NCC/NorESM2-MM/ssp370/r1i1p1f1/fx/sftlf/gn/v20191108/sftlf_fx_NorESM2-MM_ssp370_r1i1p1f1_gn.nc
+
+Surface height:
+
+SST:
+
+Snow depth / SWE:
+
+Sea-ice:
