@@ -1,3 +1,16 @@
+# I have added you as a user for NN9280K on Betzy. 
+# Regarding the CAMtr_volume_mixing_ratio, WRF will use whichever file you copy
+# into the run directory with that exact name: CAMtr_volume_mixing_ratio 
+# The compiler flag to activate this feature is -DCLWRFGHG.
+# As far as I understand it, it is not a default option, even in WRF3.9.1.  
+# But maybe it is already inserted into your configure.wrf
+# My submitting script is attached for inspiration. 
+# To handle the varying start and end dates of the simulation in the namelist, 
+# I had a namelist.input.template with placeholders, which I was modifying via
+# the sed command in the script. The same goes for the restart interval which
+# may be different for shooting-years ;)
+# - Torge
+
 #!/bin/bash
 #  Give the job a name
 #SBATCH --job-name=CFPS_rerun
