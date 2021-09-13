@@ -56,11 +56,12 @@ case $step in
         ssh $user@$betzy mkdir -p $betzy_work/$IM
         scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$year $user@$betzy:$betzy_work/$IM/
 
-        echo -- 2b. BETZY: run metgrid.exe
+        # METGRID is not required because NCL script creates the 
+        # echo -- 2b. BETZY: run metgrid.exe
         # Input:  namelist.wps, geo_em.d01, geo_em.d02
         # Output: met_em.DOMAIN.YYYY-MM-DD...
         #echo scp iompi-2020b/wps/ $user@$betzy:run_metgrid.sh
-        echo ssh $user@$betzy sbatch $betzy_work/run_metgrid.sh
+        # echo ssh $user@$betzy sbatch $betzy_work/run_metgrid.sh
         ;;
     3)
         echo -- 3. BETZY: Run real.exe

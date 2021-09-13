@@ -67,6 +67,7 @@ To produce met_em ... .nc files, run
     tail metgrid.log
 
 Input:
+    Intermediate files
 
 Output:
     met_em.d02.yyyy-mm...
