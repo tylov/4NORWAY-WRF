@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Project account key and queue
-#SBATCH --account=nn9560k --qos=preproc 
+#SBATCH --account=nn9280k --qos=preproc 
 ## Wall time limit:
-#SBATCH --time=0:24:0
+#SBATCH --time=05:00:0
 ## Job name
 #SBATCH --job-name=metgrid_noresm2-mm
 ## Number of nodes needed
@@ -33,9 +33,13 @@ module load netCDF-Fortran/4.5.3-iompi-2020b
 module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 
+cd /cluster/work/users/$USER/4NORWAY-WRF/wps
+
 ## go to run directory 
 ## Make sure output is copied back after job finishess
 savefile geo_em* 
+
+mkdir -p met_output
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log

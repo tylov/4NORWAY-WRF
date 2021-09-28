@@ -8,7 +8,7 @@
 # To handle the varying start and end dates of the simulation in the namelist, 
 # I had a namelist.input.template with placeholders, which I was modifying via
 # the sed command in the script. The same goes for the restart interval which
-# may be different for shooting-years ;)
+# may be different for leap-years ;)
 # - Torge
 
 #!/bin/bash
@@ -25,41 +25,44 @@ set -xve
 set -o errexit  # Exit the script on any error
 set -o nounset  # Treat any unset variables as an error
 module --quiet purge  # Reset the modules to the system default
-module load WRF/3.8.1-DCLWRFGHG-intel-2016a-dmpar
-module unload WRF/3.8.1-DCLWRFGHG-intel-2016a-dmpar
-module load NCO/4.6.0-intel-2016a
+module load netCDF-Fortran/4.5.3-iompi-2020b
+module load netCDF/4.7.4-iompi-2020b
+module load HDF5/1.10.7-iompi-2020b
 module list    # For easier debugging
 
+
 # Variables for preprocessing
-completed_year="2000"
-year="2001"
-next_year="2002"
+year=$1
+next_year=$(expr $year + 1)
+leap_year=$(expr $year % 4 == 0)
 
 # Go to WRF directory
-cd /cluster/work/users/torge/WRFV3/run/
+cd /cluster/work/users/$USER/4NORWAY/wrf/
 
 # Clean-up of earlier run and preprocessing
 cp rsl.error.0000 rsl.error.0000_${SLURM_JOB_ID}
 rm -f wrfbdy_d01 wrfinput_d0? wrflowinp_d0? rsl.out* rsl.error.????
-cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrfbdy_d0?_${year}??01000000*.nc.gz .
-cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrflowinp_d0?_${year}??01000000*.nc.gz .
-gunzip *.nc.gz
-ncrcat wrfbdy_d01_${year}??01000000.nc wrfbdy_d01
-ncrcat wrflowinp_d01_${year}??01000000.nc wrflowinp_d01
-ncrcat wrflowinp_d02_${year}??01000000.nc wrflowinp_d02
-rm -f wrfbdy_d0?_${year}??01000000*.nc
-rm -f wrflowinp_d0?_${year}??01000000*.nc
+#cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrfbdy_d0?_${year}??01000000*.nc.gz .
+#cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrflowinp_d0?_${year}??01000000*.nc.gz .
+#gunzip *.nc.gz
+#ncrcat wrfbdy_d01_${year}??01000000.nc wrfbdy_d01
+#ncrcat wrflowinp_d01_${year}??01000000.nc wrflowinp_d01
+#ncrcat wrflowinp_d02_${year}??01000000.nc wrflowinp_d02
+#rm -f wrfbdy_d0?_${year}??01000000*.nc
+#rm -f wrflowinp_d0?_${year}??01000000*.nc
 cp namelist.input.template namelist.input
 sed -i "s/START_YEAR/${year}/g" namelist.input
 sed -i "s/END_YEAR/${next_year}/g" namelist.input
-if [ "$year" == "2000" -o "$year" == "2004" -o "$year" == "2008" -o "$year" == "2012" ]; then
-sed -i 's/RST_INTERVAL/263520/g' namelist.input
+
+if [ $leap_year == 1 ]; then
+  sed -i 's/RST_INTERVAL/263520/g' namelist.input
 else
-sed -i 's/RST_INTERVAL/262800/g' namelist.input
+  sed -i 's/RST_INTERVAL/262800/g' namelist.input
 fi
 
 # Start WRF
-mpirun /cluster/work/users/torge/rerunBCCR/run/wrf.exe
+#mpirun /cluster/work/users/torge/rerunBCCR/run/wrf.exe
+mpirun /cluster/work/users/$USER/4NORWAY-WRF/wrf/wrf.exe
 
 # Archive model config and metadata
 mkdir -p ~/torgesubmit/${SLURM_JOB_ID}

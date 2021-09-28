@@ -58,10 +58,6 @@ metgrid
    model domain
 3) Output conforms to WRF I/O API
 
-First, link up the correct METGRID.TBL
-    ln -sf file-path-to-METGRID.TBL-files/METGRID.TBL METGRID
-    ln -sf WPS/metgrid/METGRID.TBL.ARW METGRID
-
 To produce met_em ... .nc files, run
     ./metgrid.exe >& metgrid.log
     tail metgrid.log
