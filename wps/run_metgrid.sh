@@ -33,6 +33,7 @@ module load netCDF-Fortran/4.5.3-iompi-2020b
 module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 
+year=$1
 cd /cluster/work/users/$USER/4NORWAY-WRF/wps
 
 ## go to run directory 
@@ -40,6 +41,8 @@ cd /cluster/work/users/$USER/4NORWAY-WRF/wps
 savefile geo_em* 
 
 mkdir -p met_output
+rm -f IM
+ln -s ../IM_NorESM2/$year IM
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log
