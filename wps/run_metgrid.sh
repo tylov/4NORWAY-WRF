@@ -34,6 +34,8 @@ module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 
 cd /cluster/work/users/$USER/4NORWAY-WRF/wps
+rm -f metgrid_log.zip.xz
+zip -0 -m metgrid_log.zip metgrid.log* ; xz -2 metgrid_log.zip
 
 ## go to run directory 
 ## Make sure output is copied back after job finishess
