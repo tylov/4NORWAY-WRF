@@ -1,4 +1,5 @@
 #!/bin/bash
+#!/bin/bash
 
 # Project account key and queue
 #SBATCH --account=nn9280k --qos=preproc 
@@ -36,15 +37,20 @@ module load HDF5/1.10.7-iompi-2020b
 year=$1
 cd /cluster/work/users/$USER/4NORWAY-WRF/wps
 rm -f metgrid_log.zip.xz
-zip -0 -m metgrid_log.zip metgrid.log* ; xz -2 metgrid_log.zip
+if [ -f metgrid.log ]; then 
+  zip -0 -m metgrid_log.zip metgrid.log* ; xz -2 metgrid_log.zip
+fi
 
 ## go to run directory 
 ## Make sure output is copied back after job finishess
-savefile geo_em* 
+#savefile geo_em* 
 
-mkdir -p met_output
+outdir=metgrid-out-$year
+mkdir -p $outdir
 rm -f IM
-ln -s ../IM_NorESM2/$year IM
+ln -s ../IM_NorESM/$year IM
+cp namelist.wps.template namelist.wps
+sed -i "s/METGRID_OUTPUT_PATH/$outdir/g" namelist.wps
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log
