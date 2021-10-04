@@ -53,7 +53,6 @@ case $step in
         echo -- 2a. FRAM: Copy output from NCL-script to BETZY:
         # Input:  FRAM:  /cluster/work/users/tylo/noresm2-wrf/IM_NorESM/OUTPUT_HIST/1984/
         # Output: BETZY: /cluster/work/users/tylo/noresm2-wrf/IM_NorESM/1984/NorESM2-MM:1984-01-01_00
-        #ssh $user@$betzy mkdir -p $betzy_work/$IM
         #scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$year $user@$betzy:$betzy_work/$IM/
 
         echo -- 2b. BETZY: run metgrid.exe

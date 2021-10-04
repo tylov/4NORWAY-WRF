@@ -27,31 +27,27 @@ set -o errexit # Make bash exit on any error
 set -o nounset # Treat unset variables as errors
 
 ## Software modules
-#module load intel/2016a
-#module load netCDF/4.4.0-intel-2016a
-#module load netCDF-Fortran/4.4.3-intel-2016a 
-
 module load netCDF-Fortran/4.5.3-iompi-2020b
 module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 
+## go to run directory 
 cd /cluster/work/users/$USER/4NORWAY-WRF/wps
 rm -f metgrid_log.zip.xz
 if [ -f metgrid.log ] ; then 
   zip -0 -m metgrid_log.zip metgrid.log* ; xz -2 metgrid_log.zip
 fi
 
-## go to run directory 
 ## Make sure output is copied back after job finishess
-#savefile geo_em* 
+savefile geo_em* 
 
 outdir=metgrid-out-$year
 mkdir -p $outdir
 #rm -f IM
 #ln -s ../IM_NorESM/$year IM
 cp namelist.wps.template namelist.wps
-sed -i "s|@METGRID_OUTPUT_PATH|$outdir|g" namelist.wps
-sed -i "s|@FG_NAME|../IM_NorESM/$year/NorESM2-MM|g" namelist.wps
+sed -i "s|@opt_output_from_metgrid_path|$outdir|g" namelist.wps
+sed -i "s|@fg_name|../IM_NorESM/$year/NorESM2-MM|g" namelist.wps
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log

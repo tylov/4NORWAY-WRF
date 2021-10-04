@@ -36,7 +36,7 @@
 
 &metgrid
  !constants_name = 'NORESM_FIXED',
- opt_output_from_metgrid_path = '@METGRID_OUTPUT_PATH'
- fg_name = '@FG_NAME',
+ opt_output_from_metgrid_path = '@opt_output_from_metgrid_path'
+ fg_name = '@fg_name',
  io_form_metgrid = 2
 /
