@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 
 # Project account key and queue
 #SBATCH --account=nn9280k --qos=preproc 
@@ -21,6 +20,8 @@
 #--SBATCH --switches=4
 #SBATCH --mem=10G  # justere up
 
+year=$1
+
 ## Recommended safety settings:
 set -o errexit # Make bash exit on any error
 set -o nounset # Treat unset variables as errors
@@ -34,10 +35,9 @@ module load netCDF-Fortran/4.5.3-iompi-2020b
 module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 
-year=$1
 cd /cluster/work/users/$USER/4NORWAY-WRF/wps
 rm -f metgrid_log.zip.xz
-if [ -f metgrid.log ]; then 
+if [ -f metgrid.log ] ; then 
   zip -0 -m metgrid_log.zip metgrid.log* ; xz -2 metgrid_log.zip
 fi
 
@@ -47,10 +47,11 @@ fi
 
 outdir=metgrid-out-$year
 mkdir -p $outdir
-rm -f IM
-ln -s ../IM_NorESM/$year IM
+#rm -f IM
+#ln -s ../IM_NorESM/$year IM
 cp namelist.wps.template namelist.wps
-sed -i "s/METGRID_OUTPUT_PATH/$outdir/g" namelist.wps
+sed -i "s|@METGRID_OUTPUT_PATH|$outdir|g" namelist.wps
+sed -i "s|@FG_NAME|../IM_NorESM/$year/NorESM2-MM|g" namelist.wps
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log

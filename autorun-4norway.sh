@@ -57,7 +57,7 @@ case $step in
         #scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$year $user@$betzy:$betzy_work/$IM/
 
         echo -- 2b. BETZY: run metgrid.exe
-        # Input:  namelist.wps, geo_em.d01, geo_em.d02
+        # Input:  namelist.wps, geo_em.d01, geo_em.d02, ../IM_NorESM/$year/NorESM2-MM:1984-01-01_00
         # Output: met_em.DOMAIN.YYYY-MM-DD...
         #scp wps/run_metgrid.sh $user@$betzy:wps/run_metgrid.sh
         ssh $user@$betzy sbatch $betzy_work/wps/run_metgrid.sh $year
