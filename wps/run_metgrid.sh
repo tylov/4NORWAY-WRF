@@ -46,6 +46,7 @@ mkdir -p $outdir
 #rm -f IM
 #ln -s ../IM_NorESM/$year IM
 cp namelist.wps.template namelist.wps
+sed -i "s|@year|$year|g" namelist.wps
 sed -i "s|@opt_output_from_metgrid_path|$outdir|g" namelist.wps
 sed -i "s|@fg_name|../IM_NorESM/$year/NorESM2-MM|g" namelist.wps
 
