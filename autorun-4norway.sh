@@ -59,18 +59,18 @@ case $step in
         # Input:  namelist.wps, geo_em.d01, geo_em.d02, ../IM_NorESM/$year/NorESM2-MM:1984-01-01_00
         # Output: met_em.DOMAIN.YYYY-MM-DD...
         #scp wps/run_metgrid.sh $user@$betzy:wps/run_metgrid.sh
-        ssh $user@$betzy sbatch $betzy_work/wps/run_metgrid.sh $year
+        ssh $user@$betzy "cd $betzy_work/wps ; sbatch run_metgrid.sh $year"
         ;;
     3)
         echo -- 3. BETZY: Run real.exe
         # Input:  namelist.input, met_em*
         # Output:wrfbdy_d01,wrfinput_d01, wrfbdy_d02,wrfinput_d02
-        ssh $user@$betzy sbatch $betzy_work/run_wrf.sh  # Needs SBATCH tuning
+        ssh $user@$betzy "cd $betzy_work/wrf ; sbatch run_real.sh $year"
         ;;
     4)
         echo -- 4. BETZY: Run wrf.exe
         # Input:namelist.input, wrfbdy_d01,wrfinput_d01, wrfbdy_d02,wrfinput_d02
-        ssh $user@$betzy sbatch $betzy_work/run_wrf.sh  # Needs SBATCH tuning
+        ssh $user@$betzy "cd $betzy_work/wrf ; sbatch run_wrf.sh $year"
         ;;
     *)
         echo Wrong input
