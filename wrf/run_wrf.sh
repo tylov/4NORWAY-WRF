@@ -38,7 +38,10 @@ next_year=$(expr $year + 1)
 leap_year=$(expr $year % 4 == 0)
 
 # Go to WRF directory
-cd /cluster/work/users/$USER/4NORWAY/wrf/
+#cd /cluster/work/users/$USER/4NORWAY/wrf/
+
+# Add all run files needed
+#ln -s /cluster/home/tylo/nn9280k/tyge_wrf/wrf3911_builds/cdx_WRFV3-2020b/run/* .
 
 # Clean-up of earlier run and preprocessing
 cp rsl.error.0000 rsl.error.0000_${SLURM_JOB_ID}
@@ -52,13 +55,13 @@ ncrcat wrflowinp_d02_${year}??01000000.nc wrflowinp_d02
 rm -f wrfbdy_d0?_${year}??01000000*.nc
 rm -f wrflowinp_d0?_${year}??01000000*.nc
 cp namelist.input.template namelist.input
-sed -i "s/@start_year/$year/g" namelist.input
-sed -i "s/@end_year/$year/g" namelist.input
+sed -i "s|@start_year|$year|g" namelist.input
+sed -i "s|@end_year|$year|g" namelist.input
 
 #if [ $leap_year == 1 ]; then
-#  sed -i 's/RST_INTERVAL/263520/g' namelist.input
+#  sed -i 's|RST_INTERVAL|263520|g' namelist.input
 #else
-#  sed -i 's/RST_INTERVAL/262800/g' namelist.input
+#  sed -i 's|RST_INTERVAL|262800|g' namelist.input
 #fi
 
 # Start WRF

@@ -43,8 +43,10 @@ savefile geo_em*
 
 outdir=metgrid-out-$year
 mkdir -p $outdir
-#rm -f IM
-#ln -s ../IM_NorESM/$year IM
+if [ ! -f geo_em.d01.nc ] ; then
+  ln -s /cluster/projects/nn9280k/pmo033/TEST_DATA/WPS/geo_em.d0?.nc .
+fi
+
 cp namelist.wps.template namelist.wps
 sed -i "s|@year|$year|g" namelist.wps
 sed -i "s|@opt_output_from_metgrid_path|$outdir|g" namelist.wps
