@@ -14,28 +14,40 @@
 # - Torge
 
 #  Give the job a name
-#SBATCH --job-name=CFPS_rerun
+#SBATCH --job-name=_4NORWAY
 #  Specify the project the job belongs to
 #SBATCH --account=nn9280k
 #  Specify resources
-#SBATCH --time=144:00:00
-#SBATCH --nodes=24 --ntasks-per-node=32 --cpus-per-task=1
+#SBATCH --time=20:00:00
+#SBATCH --nodes=32 --ntasks-per-node=16 --cpus-per-task=1
+
+year=$1
+if [ -z "$1" ] ; then
+    echo Usage: $0 YEAR
+    exit
+fi
 
 # Set environment and load modules
+#module --quiet purge  # Reset the modules to the system default
+module load netCDF-Fortran/4.5.3-iompi-2020b
+module load netCDF/4.7.4-iompi-2020b
+module load HDF5/1.10.7-iompi-2020b
+#module list    # For easier debugging
+
 set -xve
 set -o errexit  # Exit the script on any error
 set -o nounset  # Treat any unset variables as an error
-module --quiet purge  # Reset the modules to the system default
-module load netCDF-Fortran/4.5.3-iompi-2020b
-module load netCDF/4.7.4-iompi-2020b
-module load HDF5/1.10.7-iompi-2020b
-module list    # For easier debugging
-
 
 # Variables for preprocessing
-year=$1
 next_year=$(expr $year + 1)
-leap_year=$(expr $year % 4 == 0)
+echo "next:" $next_year
+leap_year=$(expr $year % 4)
+if [ $leap_year == 0 ] ; then 
+  echo "leap year"
+else
+  echo "no leap year"
+fi
+
 
 # Go to WRF directory
 #cd /cluster/work/users/$USER/4NORWAY/wrf/
@@ -43,17 +55,26 @@ leap_year=$(expr $year % 4 == 0)
 # Add all run files needed
 #ln -s /cluster/home/tylo/nn9280k/tyge_wrf/wrf3911_builds/cdx_WRFV3-2020b/run/* .
 
+# for testing without slurm
+if [ -z ${SLURM_JOB_ID+x} ] ; then
+  SLURM_JOB_ID=999
+fi
+
 # Clean-up of earlier run and preprocessing
-cp rsl.error.0000 rsl.error.0000_${SLURM_JOB_ID}
-rm -f wrfbdy_d01 wrfinput_d0? wrflowinp_d0? rsl.out* rsl.error.????
+if [ -f rsl.error.0000 ] ; then
+  cp rsl.error.0000 rsl.error.0000_${SLURM_JOB_ID}
+  rm -f rsl.files.zip
+  zip -qm rsl.files.zip rsl.out.* rsl.error.*
+fi
+#rm -f wrfbdy_d01 wrfinput_d0? wrflowinp_d0?
 #cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrfbdy_d0?_${year}??01000000*.nc.gz .
 #cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrflowinp_d0?_${year}??01000000*.nc.gz .
 #gunzip *.nc.gz
-ncrcat wrfbdy_d01_${year}??01000000.nc wrfbdy_d01
-ncrcat wrflowinp_d01_${year}??01000000.nc wrflowinp_d01
-ncrcat wrflowinp_d02_${year}??01000000.nc wrflowinp_d02
-rm -f wrfbdy_d0?_${year}??01000000*.nc
-rm -f wrflowinp_d0?_${year}??01000000*.nc
+#ncrcat wrfbdy_d01_${year}??01000000.nc wrfbdy_d01
+#ncrcat wrflowinp_d01_${year}??01000000.nc wrflowinp_d01
+#ncrcat wrflowinp_d02_${year}??01000000.nc wrflowinp_d02
+#rm -f wrfbdy_d0?_${year}??01000000*.nc
+#rm -f wrflowinp_d0?_${year}??01000000*.nc
 cp namelist.input.template namelist.input
 sed -i "s|@start_year|$year|g" namelist.input
 sed -i "s|@end_year|$year|g" namelist.input
@@ -66,15 +87,17 @@ sed -i "s|@end_year|$year|g" namelist.input
 
 # Start WRF
 #mpirun /cluster/work/users/torge/rerunBCCR/run/wrf.exe
-mpirun ./wrf.exe
+echo Start wrf.exe
+mpirun wrf.exe >& run_wrf.log
+echo Done wrf.exe
 
-# Archive model config and metadata
-archive=/cluster/projects/nn9280k/4NORWAY/submitted
+# archive model config and metadata
+submitted=/cluster/projects/nn9280k/4NORWAY/submitted
 output=/cluster/projects/nn9280k/4NORWAY/output
 restarts=/cluster/projects/nn9280k/4NORWAY/restarts
 
-mkdir -p $archive/${SLURM_JOB_ID}
-cp namelist.input namelist.output slurm-${SLURM_JOB_ID}.out rsl.error.0000 $archive/${SLURM_JOB_ID}/.
+mkdir -p $submitted/${SLURM_JOB_ID}
+cp namelist.input namelist.output slurm-${SLURM_JOB_ID}.out rsl.error.0000 $submitted/${SLURM_JOB_ID}/.
 
 # Move WRF output
 mkdir -p $output/$year

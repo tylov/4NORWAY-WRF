@@ -1,4 +1,5 @@
  &time_control
+! -- run_xxx have priority, but are only used by real.exe, not wrf.exe
 ! run_days                            = 1,
 ! run_hours                           = 0,
 ! run_minutes                         = 0,
@@ -6,7 +7,7 @@
  start_year                          = @start_year, @start_year, @start_year,
  start_month                         = 01,   01,   01,
  start_day                           = 01,   01,   01,
- start_hour                          = 00,   00,   00,
+ start_hour                          = 06,   06,   06,
  start_minute                        = 00,   00,   00,
  start_second                        = 00,   00,   00,
  end_year                            = @end_year, @end_year, @end_year,
@@ -64,10 +65,11 @@
  e_we                                = 347,  646,  310,
  e_sn                                = 266,  601,  220,
  e_vert                              = 51,    51,   51,
- nproc_x							 = 32,
- nproc_y 							 = 16,
+ ! -- Setting nproc_x,nproc_y will cause error: "check comm_start, nest_pes_x, nest_pes_y settings in namelist for comm"
+ !nproc_x							 = 32,
+ !nproc_y 							 = 16,
  p_top_requested                     = 5000,
- num_metgrid_levels                  = 38,
+ num_metgrid_levels                  = 27,
  num_metgrid_soil_levels             = 4,
  dx                                  = 15564.85,  3112.969,  1037.656,
  dy                                  = 15564.85,  3112.969,  1037.656,
@@ -209,3 +211,6 @@
  potevp_diag                = 1,
  convxtrm_diag              = 1,
  /
+
+traj_opt                    = 0
+num_traj                    = 0

@@ -2,19 +2,20 @@
 ## Project account key and queue
 #SBATCH --account=nn9280k 
 ## Wall time limit:
-#SBATCH --time=10:00:0
+#SBATCH --time=0:30:0
 ## Job name
-#SBATCH --job-name=realdomain01
+#SBATCH --job-name=real_noresm2-mm
 ## Number of nodes needed
 #SBATCH --nodes=4
 ## Number of tasks to start on each node (max is 2 sockets x 16 cores =32)
-#SBATCH --ntasks-per-node=64
+#--SBATCH --ntasks-per-node=64
+
 ## Number of sockets on each node (max is 2)
-#SBATCH --sockets-per-node=2
+#--SBATCH --sockets-per-node=2
 ## Number of cores per socket (max is 16)
-#SBATCH --cores-per-socket=16
+#--SBATCH --cores-per-socket=16
 ## Over ride default settings for islands and queues
-#SBATCH --switches=4
+#--SBATCH --switches=4
 ## Do not restart simulation if queue fails
 #SBATCH --no-requeue
 
