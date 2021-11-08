@@ -20,6 +20,10 @@
 #--SBATCH --switches=4
 #SBATCH --mem=10G  # justere up
 
+if [ -z "$1" ] ; then
+    echo Usage: $0 YEAR
+    exit
+fi
 year=$1
 
 ## Recommended safety settings:

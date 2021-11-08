@@ -21,11 +21,11 @@
 #SBATCH --time=20:00:00
 #SBATCH --nodes=32 --ntasks-per-node=16 --cpus-per-task=1
 
-year=$1
 if [ -z "$1" ] ; then
     echo Usage: $0 YEAR
     exit
 fi
+year=$1
 
 # Set environment and load modules
 #module --quiet purge  # Reset the modules to the system default

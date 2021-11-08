@@ -1,11 +1,10 @@
 &share
  wrf_core = 'ARW',
  max_dom = 2,
- start_date = '@year-01-01_06:00:00','@year-01-01_06:00:00',
- !end_date   = '@year-12-31_18:00:00','@year-12-31_18:00:00',
- !end_date   = '@year-03-31_18:00:00','@year-03-31_18:00:00',
- !end_date   = '@year-01-03_18:00:00','@year-01-03_18:00:00',
- end_date   = '@year-01-01_18:00:00','@year-01-01_18:00:00',
+ start_date = '1986-01-01_06:00:00','1986-01-01_06:00:00',
+ !end_date   = '1986-12-31_18:00:00','1986-12-31_18:00:00',
+ !end_date   = '1986-03-31_18:00:00','1986-03-31_18:00:00',
+ end_date   = '1986-01-03_18:00:00','1986-01-03_18:00:00',
  interval_seconds = 21600,
  io_form_geogrid = 2
 /
@@ -38,7 +37,7 @@
 
 &metgrid
  !constants_name = 'NORESM_FIXED',
- opt_output_from_metgrid_path = '@opt_output_from_metgrid_path'
- fg_name = '@fg_name',
+ opt_output_from_metgrid_path = 'metgrid-out-1986'
+ fg_name = '../IM_NorESM/1986/NorESM2-MM',
  io_form_metgrid = 2
 /

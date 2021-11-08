@@ -19,11 +19,11 @@
 ## Do not restart simulation if queue fails
 #SBATCH --no-requeue
 
-year=$1
 if [ -z "$1" ] ; then
     echo Usage: $0 YEAR
     exit
 fi
+year=$1
 
 ## Recommended safety settings:
 set -o errexit # Make bash exit on any error

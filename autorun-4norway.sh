@@ -17,6 +17,7 @@ if [ -z "$2" ]; then
 fi 
 # Use $IM work folder:
 year=$1
+next_year=$(expr $year + 1)
 step=$2
 user=$USER
 proj=4NORWAY-WRF
@@ -53,7 +54,8 @@ case $step in
         echo -- 2a. FRAM: Copy output from NCL-script to BETZY:
         # Input:  FRAM:  /cluster/work/users/tylo/noresm2-wrf/IM_NorESM/OUTPUT_HIST/1984/
         # Output: BETZY: /cluster/work/users/tylo/noresm2-wrf/IM_NorESM/1984/NorESM2-MM:1984-01-01_00
-        #scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$year $user@$betzy:$betzy_work/$IM/
+        scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$next_year $user@$betzy:$betzy_work/$IM/
+        scp -3 -r $user@$fram:$fram_work/$IM/OUTPUT_HIST/$year $user@$betzy:$betzy_work/$IM/
 
         echo -- 2b. BETZY: run metgrid.exe
         # Input:  namelist.wps, geo_em.d01, geo_em.d02, ../IM_NorESM/$year/NorESM2-MM:1984-01-01_00
