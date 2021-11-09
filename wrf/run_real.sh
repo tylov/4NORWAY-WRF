@@ -2,13 +2,13 @@
 ## Project account key and queue
 #SBATCH --account=nn9280k 
 ## Wall time limit:
-#SBATCH --time=0:30:0
+#SBATCH --time=10:00:0
 ## Job name
 #SBATCH --job-name=real_noresm2-mm
 ## Number of nodes needed
 #SBATCH --nodes=4
 ## Number of tasks to start on each node (max is 2 sockets x 16 cores =32)
-#--SBATCH --ntasks-per-node=64
+#SBATCH --ntasks-per-node=16
 
 ## Number of sockets on each node (max is 2)
 #--SBATCH --sockets-per-node=2
