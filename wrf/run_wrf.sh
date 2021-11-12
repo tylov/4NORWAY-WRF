@@ -14,12 +14,15 @@
 # - Torge
 
 #  Give the job a name
-#SBATCH --job-name=_4NORWAY
+#--SBATCH # --cpus-per-task=1
+#SBATCH --job-name=wrf_4norway
 #  Specify the project the job belongs to
 #SBATCH --account=nn9280k
 #  Specify resources
-#SBATCH --time=20:00:00
-#SBATCH --nodes=4 --ntasks-per-node=16 --cpus-per-task=1
+#SBATCH --time=96:00:00
+#SBATCH --nodes=128
+#--SBATCH --ntasks-per-node=16
+#--SBATCH --ntasks-per-node=8
 
 if [ -z "$1" ] ; then
     echo Usage: $0 YEAR
@@ -34,18 +37,18 @@ module load netCDF/4.7.4-iompi-2020b
 module load HDF5/1.10.7-iompi-2020b
 #module list    # For easier debugging
 
-set -xve
+#set -xve
 set -o errexit  # Exit the script on any error
 set -o nounset  # Treat any unset variables as an error
 
 # Variables for preprocessing
 next_year=$(expr $year + 1)
-echo "next:" $next_year
-leap_year=$(expr $year % 4)
+leap_year=$(($year % 4))
+
 if [ $leap_year == 0 ] ; then 
-  echo "leap year"
+  echo "$year is leap year"
 else
-  echo "no leap year"
+  echo "$year is not leap year"
 fi
 
 
@@ -57,7 +60,7 @@ fi
 
 # for testing without slurm
 if [ -z ${SLURM_JOB_ID+x} ] ; then
-  SLURM_JOB_ID=999
+  SLURM_JOB_ID=9999
 fi
 
 # Clean-up of earlier run and preprocessing
