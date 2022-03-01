@@ -38,7 +38,7 @@ IM=IM_NorESM
 fram=login.fram.sigma2.no
 betzy=login.betzy.sigma2.no
 
-for (( year=$start_year; year<=$end_year; ++year ))
+for (( year=$start_year; year<=$end_year; ++year )); do
   echo Year $year
   next_year=$(expr $year + 1)
   prev_year=$(expr $year - 2)
