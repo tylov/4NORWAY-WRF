@@ -62,11 +62,11 @@ ncl Hybrid_To_Pres_new.ncl CASE=\"$year\" OUTROOT=\"$fram_work/$IM/\" > $fram_wo
 popd
 
 # step 4:
-echo -- 4. Copy output from NCL-script from FRAM to BETZY:
-scp -r $user@$fram:$fram_work/$HIST/$next_year $user@$betzy:$betzy_work/$IM/
-scp -r $user@$fram:$fram_work/$HIST/$year $user@$betzy:$betzy_work/$IM/
+#echo -- 4. Copy output from NCL-script from FRAM to BETZY:
+#scp -r $user@$fram:$fram_work/$HIST/$next_year $user@$betzy:$betzy_work/$IM/
+#scp -r $user@$fram:$fram_work/$HIST/$year $user@$betzy:$betzy_work/$IM/
 
 # step 5:
-echo -- 5. Run metgrid.exe on BETZY:
+#echo -- 5. Run metgrid.exe on BETZY:
 # Assume betzy_work/wps has all needed files:
-ssh $user@$betzy "cd $betzy_work/wps ; sbatch run_metgrid.sh $year"
+#ssh $user@$betzy "cd $betzy_work/wps ; sbatch run_metgrid.sh $year"
