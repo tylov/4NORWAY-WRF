@@ -59,7 +59,7 @@ for (( year=$start_year; year<=$end_year; ++year )); do
     3)
         echo -- 3. FRAM: Submit Hybrid_To_Pres_new.ncl script:
         # Input:  FRAM: /cluster/work/users/tylo/4NORWAY-WRF/IM_NorESM/1984_intoNCL/atmos_hus.nc ...
-        # Output: FRAM: /cluster/work/users/tylo/4NORWAY-WRF/IM_NorESM/1984/NorESM2-MM:1984-01-01_00
+        # Output: FRAM: /cluster/work/users/tylo/4NORWAY-WRF/IM_NorESM/OUTPUT_HIST/1984/NorESM2-MM:1984-01-01_00
         scp Hybrid_To_Pres_new.ncl submit2queue.sh $user@$fram:$fram_work/$IM/
         ssh $user@$fram "cd $fram_work/$IM ; sbatch submit2queue.sh $year $fram_work/$IM/"
         ;;
@@ -81,12 +81,12 @@ for (( year=$start_year; year<=$end_year; ++year )); do
     6)
         echo -- 6. BETZY: Run real.exe
         # Input:  namelist.input, met_em*
-        # Output:wrfbdy_d01,wrfinput_d01, wrfbdy_d02,wrfinput_d02
+        # Output: wrfbdy_d01, wrfinput_d01, wrfbdy_d02, wrfinput_d02
         ssh $user@$betzy "cd $betzy_work/wrf ; sbatch run_real.sh $year"
         ;;
     7)
         echo -- 7. BETZY: Run wrf.exe
-        # Input:namelist.input, wrfbdy_d01,wrfinput_d01, wrfbdy_d02,wrfinput_d02
+        # Input: namelist.input, wrfbdy_d01, wrfinput_d01, wrfbdy_d02, wrfinput_d02
         ssh $user@$betzy "cd $betzy_work/wrf ; sbatch run_wrf.sh $year"
         ;;
     *)
