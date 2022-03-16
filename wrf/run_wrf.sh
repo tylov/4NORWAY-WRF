@@ -13,16 +13,19 @@
 # may be different for leap-years ;)
 # - Torge
 
-#  Give the job a name
-#--SBATCH # --cpus-per-task=1
+#//SBATCH --qos=normal
 #SBATCH --job-name=wrf_4norway
-#  Specify the project the job belongs to
 #SBATCH --account=nn9280k
-#  Specify resources
 #SBATCH --time=96:00:00
-#SBATCH --nodes=128
-#--SBATCH --ntasks-per-node=16
-#--SBATCH --ntasks-per-node=8
+#SBATCH --nodes=128 --ntasks-per-node=64 --cpus-per-task=1
+
+#!!SBATCH --qos=devel
+#!!SBATCH --job-name=wrf_4norway-dev
+#!!SBATCH --account=nn9280k
+#  Specify resources
+#!!SBATCH --time=00:60:00
+#!!SBATCH --nodes=4 --ntasks-per-node=128
+
 
 if [ -z "$1" ] ; then
     echo Usage: $0 YEAR
@@ -66,8 +69,7 @@ fi
 # Clean-up of earlier run and preprocessing
 if [ -f rsl.error.0000 ] ; then
   cp rsl.error.0000 rsl.error.0000_${SLURM_JOB_ID}
-  rm -f rsl.files.zip
-  zip -qm rsl.files.zip rsl.out.* rsl.error.*
+  rm -f rsl.out.* rsl.error.*
 fi
 #rm -f wrfbdy_d01 wrfinput_d0? wrflowinp_d0?
 #cp /cluster/projects/nn9280k/torge/FZJ_data/${year}/wrfbdy_d0?_${year}??01000000*.nc.gz .
@@ -89,10 +91,11 @@ sed -i "s|@end_year|$year|g" namelist.input
 #fi
 
 # Start WRF
-#mpirun /cluster/work/users/torge/rerunBCCR/run/wrf.exe
 echo Start wrf.exe
-mpirun wrf.exe >& run_wrf.log
-echo Done wrf.exe
+#mpirun wrf.exe >& run_wrf.log
+ulimit -s unlimited
+srun --mpi=pmi2 wrf.exe >& wrf.log
+#echo Done wrf.exe
 
 # archive model config and metadata
 submitted=/cluster/projects/nn9280k/4NORWAY/submitted

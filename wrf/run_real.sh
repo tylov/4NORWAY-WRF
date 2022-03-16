@@ -2,8 +2,10 @@
 ## Project account key and queue
 #SBATCH --account=nn9280k 
 ## Wall time limit:
+#!!SBATCH --time=01:00:0
 #SBATCH --time=10:00:0
 ## Job name
+#!!SBATCH --qos=devel
 #SBATCH --job-name=real_noresm2-mm
 ## Number of nodes needed
 #SBATCH --nodes=4
