@@ -1,0 +1,59 @@
+Removed SOILTEMP, SAI  (ALBEDO was listed twice)
+
+PMSL SPLM PSLV_GC
+
+WARNINGS:
+
+ Domain            1  Setting history stream           14  for xlong
+ Domain            1  Setting history stream           14  for xlat
+ Domain            1  Setting history stream           14  for t2
+ Domain            1  Setting history stream           14  for q2
+ Domain            1  Setting history stream           14  for u10
+ Domain            1  Setting history stream           14  for v10
+ Domain            1  Setting history stream           14  for rainc
+ Domain            1  Setting history stream           14  for rainnc
+ Domain            1  Setting history stream           14  for psfc
+ Domain            1  Setting history stream           14  for swdown
+ Domain            1  Setting history stream           14  for lwdnb
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+ Domain            1  Setting history stream           14  for cldfra
+ Domain            1  Setting history stream           14  for swvisdir
+ Domain            1  Setting history stream           14  for swvisdif
+ Domain            1  Setting history stream           14  for swnirdir
+ Domain            1  Setting history stream           14  for swnirdif
+ Ignoring problems reading rcm_iofields_d01.txt
+Continuing.  To make this a fatal error, set ignore_iofields_warn to false in namelist
+
+...
+
+NPUT LandUse = "USGS"
+ LANDUSE TYPE = "USGS" FOUND          33  CATEGORIES           2  SEASONS WATER CATEGORY =           16  SNOW CATEGORY =           24
+ SOIL TEXTURE CLASSIFICATION = STAS FOUND          19  CATEGORIES
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+ mediation_integrate.G        1728 DATASET=HISTORY
+ mediation_integrate.G        1729  grid%id            1  grid%oid            1
+Timing for Writing wrfout_d01_1984-01-01_00:00:00 for domain        1:    2.04183 elapsed seconds
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+Timing for Writing wrfxtrm_d01_1984-01-01_00:00:00 for domain        1:    0.14731 elapsed seconds
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+
+...
+
+Timing for main: time 1984-01-01_00:59:36 on domain   2:    0.29236 elapsed seconds
+Timing for main: time 1984-01-01_00:59:48 on domain   2:    0.29213 elapsed seconds
+Timing for main: time 1984-01-01_01:00:00 on domain   2:    0.29350 elapsed seconds
+Timing for main: time 1984-01-01_01:00:00 on domain   1:    1.69982 elapsed seconds
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d01.txt at line            1
+Timing for Writing wrfhrly_d01_1984-01-01_01:00:00 for domain        1:    0.17601 elapsed seconds
+ W A R N I N G : Unable to modify mask for rainc.  Variable not found. File: rcm_iofields_d02.txt at line            1
+ W A R N I N G : Unable to modify mask for rainnc.  Variable not found. File: rcm_iofields_d02.txt at line            1
+ W A R N I N G : Unable to modify mask for swdown.  Variable not found. File: rcm_iofields_d02.txt at line            1
+ W A R N I N G : Unable to modify mask for lwdnb.  Variable not found. File: rcm_iofields_d02.txt at line            1
+ W A R N I N G : Unable to modify mask for pmsl.  Variable not found. File: rcm_iofields_d02.txt at line            1
+ W A R N I N G : Unable to modify mask for cldfra.  Variable not found. File: rcm_iofields_d02.txt at line            1
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+wrf.exe            0000000002CF9E2B  for__signal_handl     Unknown  Unknown

@@ -13,25 +13,46 @@
 # may be different for leap-years ;)
 # - Torge
 
-#//SBATCH --qos=normal
+#         qos=normal
 #SBATCH --job-name=wrf_4norway
-#SBATCH --account=nn9280k
 #SBATCH --time=96:00:00
-#SBATCH --nodes=128 --ntasks-per-node=64 --cpus-per-task=1
+#SBATCH --account=nn9280k
+#//SBATCH --nodes=16 --ntasks-per-node=25 --cpus-per-task=1
+#//SBATCH --nodes=8 --ntasks-per-node=50 --cpus-per-task=1
+#SBATCH --nodes=4 --ntasks-per-node=100 --cpus-per-task=1
 
 #!!SBATCH --qos=devel
 #!!SBATCH --job-name=wrf_4norway-dev
-#!!SBATCH --account=nn9280k
-#  Specify resources
 #!!SBATCH --time=00:60:00
+#!!SBATCH --account=nn9280k
 #!!SBATCH --nodes=4 --ntasks-per-node=128
 
-
-if [ -z "$1" ] ; then
-    echo Usage: $0 YEAR
+if [ -z "$2" ] ; then
+    echo "Usage: sbatch $0 from-date num-months [num-days]"
     exit
 fi
-year=$1
+fromdate=$1
+months=$2
+if [ -z "$3" ] ; then
+    days=0
+else 
+    days=$3
+ fi
+
+year=$(date --date="$fromdate" +'%Y')
+month=$(date --date="$fromdate" +'%m')
+day=$(date --date="$fromdate" +'%d')
+
+datep4=$(date --date="$fromdate +4 days" +'%Y-%m-%d')
+daysm4=$((days - 4))
+
+end_year=$(date --date="$datep4 +$months months +$daysm4 days" +'%Y')
+end_month=$(date --date="$datep4 +$months months +$daysm4 days" +'%m')
+end_day=$(date --date="$datep4 +$months months +$daysm4 days" +'%d')
+
+#echo $year, $month, $day, $datep4
+#echo $end_year, $end_month, $end_day
+#exit
 
 # Set environment and load modules
 #module --quiet purge  # Reset the modules to the system default
@@ -82,7 +103,11 @@ fi
 #rm -f wrflowinp_d0?_${year}??01000000*.nc
 cp namelist.input.template namelist.input
 sed -i "s|@start_year|$year|g" namelist.input
-sed -i "s|@end_year|$year|g" namelist.input
+sed -i "s|@end_year|$end_year|g" namelist.input
+sed -i "s|@start_month|$month|g" namelist.input
+sed -i "s|@end_month|$end_month|g" namelist.input
+sed -i "s|@start_day|$day|g" namelist.input
+sed -i "s|@end_day|$end_day|g" namelist.input
 
 #if [ $leap_year == 1 ]; then
 #  sed -i 's|RST_INTERVAL|263520|g' namelist.input
