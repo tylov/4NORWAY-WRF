@@ -28,7 +28,7 @@
 #!!SBATCH --nodes=4 --ntasks-per-node=128
 
 if [ -z "$2" ] ; then
-    echo "Usage: sbatch $0 from-date num-months [num-days]"
+    echo "Usage: sbatch $0 from-date num-months [num-days [end-hour]]"
     exit
 fi
 fromdate=$1
@@ -37,7 +37,13 @@ if [ -z "$3" ] ; then
     days=0
 else 
     days=$3
- fi
+fi
+if [ -z "$4" ] ; then
+    end_hour=00
+else 
+    end_hour=$4
+fi
+
 
 year=$(date --date="$fromdate" +'%Y')
 month=$(date --date="$fromdate" +'%m')
@@ -108,6 +114,7 @@ sed -i "s|@start_month|$month|g" namelist.input
 sed -i "s|@end_month|$end_month|g" namelist.input
 sed -i "s|@start_day|$day|g" namelist.input
 sed -i "s|@end_day|$end_day|g" namelist.input
+sed -i "s|@end_hour|$end_hour|g" namelist.input
 
 #if [ $leap_year == 1 ]; then
 #  sed -i 's|RST_INTERVAL|263520|g' namelist.input
