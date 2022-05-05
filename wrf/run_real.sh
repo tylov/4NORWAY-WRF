@@ -3,29 +3,57 @@
 #SBATCH --account=nn9280k 
 ## Wall time limit:
 #!!SBATCH --time=01:00:0
-#SBATCH --time=10:00:0
+#--SBATCH --time=10:00:0
 ## Job name
-#!!SBATCH --qos=devel
-#SBATCH --job-name=real_noresm2-mm
-## Number of nodes needed
-#SBATCH --nodes=4
 ## Number of tasks to start on each node (max is 2 sockets x 16 cores =32)
-#SBATCH --ntasks-per-node=16
+#--SBATCH --nodes=4 --ntasks-per-node=16
 
-## Number of sockets on each node (max is 2)
-#--SBATCH --sockets-per-node=2
-## Number of cores per socket (max is 16)
-#--SBATCH --cores-per-socket=16
-## Over ride default settings for islands and queues
-#--SBATCH --switches=4
-## Do not restart simulation if queue fails
-#SBATCH --no-requeue
+#--SBATCH --job-name=real4norway
+#--SBATCH --time=96:00:00
+#--SBATCH --account=nn9280k
+#--SBATCH --nodes=4 --ntasks-per-node=100 --cpus-per-task=1
 
-if [ -z "$1" ] ; then
-    echo Usage: $0 YEAR
+#SBATCH --qos=devel
+#SBATCH --job-name=dev-real4norway
+#SBATCH --time=00:60:00
+#SBATCH --account=nn9280k
+#SBATCH --nodes=4 --ntasks-per-node=128
+
+
+if [ -z "$2" ] ; then
+    echo "Usage: sbatch $0 from-date num-months [num-days [end-hour]]"
     exit
 fi
-year=$1
+fromdate=$1
+months=$2
+if [ -z "$3" ] ; then
+    days=0
+else 
+    days=$3
+fi
+if [ -z "$4" ] ; then
+    hours=0
+else 
+    hours=$4
+fi
+
+year=$(date --date="$fromdate" +'%Y')
+month=$(date --date="$fromdate" +'%m')
+day=$(date --date="$fromdate" +'%d')
+hour=$(date --date="$fromdate" +'%H')
+
+todate=$(date --date="$fromdate +$months months +$days days +$hours hours")
+echo from-date : $fromdate
+echo to-date   : $todate
+
+end_year=$(date --date="$todate" +'%Y')
+end_month=$(date --date="$todate" +'%m')
+end_day=$(date --date="$todate" +'%d')
+end_hour=$(date --date="$todate" +'%H')
+
+#echo from: $year, $month, $day  hour: $hour
+#echo end : $end_year, $end_month, $end_day  hour: $end_hour
+#exit
 
 ## Recommended safety settings:
 set -o errexit # Make bash exit on any error
@@ -41,7 +69,12 @@ module load HDF5/1.10.7-iompi-2020b
 
 cp namelist.input.template namelist.input
 sed -i "s|@start_year|$year|g" namelist.input
-sed -i "s|@end_year|$year|g" namelist.input
+sed -i "s|@end_year|$end_year|g" namelist.input
+sed -i "s|@start_month|$month|g" namelist.input
+sed -i "s|@end_month|$end_month|g" namelist.input
+sed -i "s|@start_day|$day|g" namelist.input
+sed -i "s|@end_day|$end_day|g" namelist.input
+sed -i "s|@end_hour|$end_hour|g" namelist.input
 
 rm -f met_em.d0*.nc
 ln -s ../wps/metgrid-out-$year/met_em.d0*.nc .

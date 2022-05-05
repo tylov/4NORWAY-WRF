@@ -39,25 +39,27 @@ else
     days=$3
 fi
 if [ -z "$4" ] ; then
-    end_hour=00
+    hours=0
 else 
-    end_hour=$4
+    hours=$4
 fi
-
 
 year=$(date --date="$fromdate" +'%Y')
 month=$(date --date="$fromdate" +'%m')
 day=$(date --date="$fromdate" +'%d')
+hour=$(date --date="$fromdate" +'%H')
 
-datep4=$(date --date="$fromdate +4 days" +'%Y-%m-%d')
-daysm4=$((days - 4))
+todate=$(date --date="$fromdate +$months months +$days days +$hours hours")
+echo from-date : $fromdate
+echo to-date   : $todate
 
-end_year=$(date --date="$datep4 +$months months +$daysm4 days" +'%Y')
-end_month=$(date --date="$datep4 +$months months +$daysm4 days" +'%m')
-end_day=$(date --date="$datep4 +$months months +$daysm4 days" +'%d')
+end_year=$(date --date="$todate" +'%Y')
+end_month=$(date --date="$todate" +'%m')
+end_day=$(date --date="$todate" +'%d')
+end_hour=$(date --date="$todate" +'%H')
 
-#echo $year, $month, $day, $datep4
-#echo $end_year, $end_month, $end_day
+#echo from: $year, $month, $day  hour: $hour
+#echo end : $end_year, $end_month, $end_day  hour: $end_hour
 #exit
 
 # Set environment and load modules
