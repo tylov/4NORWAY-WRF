@@ -28,6 +28,6 @@ module purge
 module load NCL/6.5.0-intel-2018a
 # module load NCL/6.6.2-intel-2019b # betzy - not working with bigmem
 
-WDIR=/cluster/work/users/$USER/IM_NorESM
-cd $WDIR
-ncl Hybrid_To_Pres_new.ncl CASE=\"$1\" outROOT=\"$2\" > log-Hybrid_To_Pres_new-$1.txt
+#WDIR=/cluster/work/users/$USER/IM_NorESM
+#cd $WDIR
+ncl Hybrid_To_Pres_new.ncl CASE=\"$1\" OUTROOT=\"$2\" > log-Hybrid_To_Pres_new-$1.txt
