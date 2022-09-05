@@ -5,10 +5,10 @@
 #
 #  Specify the project the job belongs to
 #SBATCH --account=nn9560k
-#SBATCH --time=1:20:00
+#SBATCH --time=2:00:00
 #SBATCH --partition=bigmem
-##SBATCH --ntasks=1
-##SBATCH --mem-per-cpu=170G
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=170G
 
 ###SBATCH --nodes=1 --ntasks-per-node=1
 #  Set OMP_NUM_THREADS
