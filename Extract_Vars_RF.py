@@ -1,12 +1,14 @@
 ########
 # This script chooses a single year and preprocesses all NorESM output for WRF intermediate file generation (extracts variables, windows the data etc.)
 # Modified by Marie April 2020 to create files from NorESM cmip6 to Reeffutures project downscaling
+# Modified by Tyge.
 ########
 
 ########
 # python modules to import
 import os
 import sys
+import platform
 ########
 
 ########
@@ -36,12 +38,15 @@ os.makedirs(outdir, exist_ok=True)
 #dir_extr = outdir+year_str+"_intoNCL"
 #os.makedirs(dir_extr, exist_ok=True)
 
-dir_6hr_day = "/projects/NS9560K/noresm/cases/NHISTfrc2_f09_tn14_20191025/atm/hist/"
+noresm_cases = "/projects/NS9560K/noresm/cases/"
+noresm_exp = "NHISTfrc2_f09_tn14_20191025"
+
+dir_6hr_day = noresm_cases+noresm_exp+"/atm/hist/"
 dir_day = dir_6hr_day
-dir_month = "/projects/NS9560K/noresm/cases/NHISTfrc2_f09_tn14_20191025/lnd/hist/"
-file_ext_6hr = "NHISTfrc2_f09_tn14_20191025.cam.h3."+year_str+"-??-??-21600.nc"
-file_ext_day = "NHISTfrc2_f09_tn14_20191025.cam.h1."+year_str+"-??-??-00000.nc"
-file_ext_month = "NHISTfrc2_f09_tn14_20191025.clm2.h0."+year_str+"-??-??-00000.nc"
+dir_month = noresm_cases+noresm_exp+"/lnd/hist/"
+file_ext_6hr = noresm_exp+".cam.h3."+year_str+"-??-??-21600.nc"
+file_ext_day = noresm_exp+".cam.h1."+year_str+"-??-??-00000.nc"
+file_ext_month = noresm_exp+".clm2.h0."+year_str+"-??-??-00000.nc"
 name_6hr_orig = file_ext_6hr
 name_day_orig = file_ext_day
 name_month_orig = file_ext_month
@@ -114,7 +119,7 @@ surf_geo_again = False #True # create surface geopot field/file (zsfc) again? no
 ############################
 if surf_geo_again: 
  print("will extract static surface geopot field!")
- raw_file_zsfc = dir_6hr_day+"NHISTfrc2_f09_tn14_20191025.cam.h3.1991-01-01-21600.nc" # file from which zsfc will be extracted 
+ raw_file_zsfc = dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc" # file from which zsfc will be extracted 
  name_zsfc = outdir+"zsfc.nc"# static surface geopot file name (user-defined)
  
  extract_command_zsfc = "cdo select,name=PHIS "+raw_file_zsfc+" "+name_zsfc
@@ -132,7 +137,7 @@ if surf_geo_again:
  set_attr_command_zsfc = 'ncatted -O -a standard_name,PHIS,c,c,"surface_geopotential" '+name_zsfc+' '+name_zsfc # In order for CDO to recognize the "surface geopotential" field, the standard_name attribute of the variable (PHIS here) should be set as "surface_geopotential"
  print("setting the standard name attribute, static surface geopot field...")
  os.system(set_attr_command_zsfc) # 
- extr_hybrid_command = "cdo -select,name=hyai,hyam,hybi,hybm,ilev "+dir_6hr_day+"NHISTfrc2_f09_tn14_20191025.cam.h3.1991-01-01-21600.nc "+name_hybrid # extract surface temp
+ extr_hybrid_command = "cdo -select,name=hyai,hyam,hybi,hybm,ilev "+dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc "+name_hybrid # extract surface temp
  print("extracting static hybrid level coefs into separate file...")
  os.system(extr_hybrid_command) 
 else:

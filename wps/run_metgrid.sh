@@ -58,4 +58,4 @@ sed -i "s|@fg_name|../IM_NorESM/$year/NorESM2-MM|g" namelist.wps
 
 ## Run the application
 #srun --mpi=pmi2 metgrid.exe >& metgrid.log
-mpirun metgrid.exe >& metgrid.log
+mpirun metgrid.exe >& metgrid-$year.log
