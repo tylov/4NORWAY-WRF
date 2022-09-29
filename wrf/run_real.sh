@@ -8,52 +8,58 @@
 ## Number of tasks to start on each node (max is 2 sockets x 16 cores =32)
 #--SBATCH --nodes=4 --ntasks-per-node=16
 
-#--SBATCH --job-name=real4norway
-#--SBATCH --time=96:00:00
-#--SBATCH --account=nn9280k
-#--SBATCH --nodes=4 --ntasks-per-node=100 --cpus-per-task=1
-
-#SBATCH --qos=devel
-#SBATCH --job-name=dev-real4norway
-#SBATCH --time=00:60:00
+#SBATCH --job-name=real4norway
+#SBATCH --time=96:00:00
 #SBATCH --account=nn9280k
-#SBATCH --nodes=4 --ntasks-per-node=128
+#SBATCH --nodes=4 --ntasks-per-node=64 --cpus-per-task=1
+
+#//SBATCH --qos=devel
+#//SBATCH --job-name=dev-real4norway
+#//SBATCH --time=0:60:00
+#//SBATCH --account=nn9280k
+#//SBATCH --nodes=4 --ntasks-per-node=16
 
 
 if [ -z "$2" ] ; then
-    echo "Usage: sbatch $0 from-date num-months [num-days [end-hour]]"
+    #echo "Usage: sbatch $0 from-date num-months [num-days [end-hour]]"
+    echo "Usage: sbatch $0 from-date to-date"
     exit
 fi
 fromdate=$1
-months=$2
-if [ -z "$3" ] ; then
-    days=0
-else 
-    days=$3
+todate=$2
+restart=".false."
+if [ ! -z "$3" ] ; then
+    restart=$3
 fi
-if [ -z "$4" ] ; then
-    hours=0
-else 
-    hours=$4
-fi
+
+#months=$2
+#if [ -z "$3" ] ; then
+#    days=0
+#else 
+#    days=$3
+#fi
+#if [ -z "$4" ] ; then
+#    hours=0
+#else 
+#    hours=$4
+#fi
 
 year=$(date --date="$fromdate" +'%Y')
 month=$(date --date="$fromdate" +'%m')
 day=$(date --date="$fromdate" +'%d')
 hour=$(date --date="$fromdate" +'%H')
 
-todate=$(date --date="$fromdate +$months months +$days days +$hours hours")
-echo from-date : $fromdate
-echo to-date   : $todate
+#todate=$(date --date="$fromdate +$months months +$days days +$hours hours")
+#echo from-date : $fromdate
+#echo to-date   : $todate
 
 end_year=$(date --date="$todate" +'%Y')
 end_month=$(date --date="$todate" +'%m')
 end_day=$(date --date="$todate" +'%d')
 end_hour=$(date --date="$todate" +'%H')
 
-#echo from: $year, $month, $day  hour: $hour
-#echo end : $end_year, $end_month, $end_day  hour: $end_hour
-#exit
+echo from: $year-$month-$day $hour hours
+echo end : $end_year-$end_month-$end_day $end_hour hours
 
 ## Recommended safety settings:
 set -o errexit # Make bash exit on any error
@@ -75,6 +81,7 @@ sed -i "s|@end_month|$end_month|g" namelist.input
 sed -i "s|@start_day|$day|g" namelist.input
 sed -i "s|@end_day|$end_day|g" namelist.input
 sed -i "s|@end_hour|$end_hour|g" namelist.input
+sed -i "s|@restart|$restart|g" namelist.input
 
 rm -f met_em.d0*.nc
 ln -s ../wps/metgrid-out-$year/met_em.d0*.nc .

@@ -18,9 +18,9 @@
  end_second                          = 00,   00,   00,
  interval_seconds                    = 21600 
  input_from_file                     = .true.,.true.,.true.,
- history_interval                    = 360, 360,  360,
+ history_interval                    = 360000, 360000,  360000,
  frames_per_outfile                  = 1,    1,    1,
- restart                             = .false.,
+ restart                             = @restart,
  restart_interval                    = 28800,
  io_form_history                     = 2,
  io_form_restart                     = 2,
@@ -48,9 +48,9 @@
  auxhist9_interval                   = 180, 180, 180,
  frames_per_auxhist9                 = 8,    8,   8,
  io_form_auxhist9                    = 2,
- auxhist14_outname                   = "wrfhrly_d<domain>_<date>"
- auxhist14_interval                  = 60, 60, 7200,
- frames_per_auxhist14                = 24, 24,   1,
+ auxhist14_outname                   = "wrf3hr_d<domain>_<date>"
+ auxhist14_interval                  = 180, 180, 180,
+ frames_per_auxhist14                = 8, 8, 8,
  io_form_auxhist14                   = 2,
  override_restart_timers             = .true.,
  /
@@ -199,7 +199,7 @@
  /
 
  &cordex
- output_cordex              = 1,
+ output_cordex              = 0,
  psl_diag                   = 3,
  psmooth                    = 5,
  wsgs_diag                  = 1,
