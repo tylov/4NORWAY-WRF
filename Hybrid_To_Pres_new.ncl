@@ -19,35 +19,35 @@ begin
 ; Which CASE are we doing. 
 ;******************************************************************************
 
-; PASS AS ARGUMENTS TO SCRIPT: CASE OUTROOT
-;CASE = "1985" ; year, override with script argument
-;OUTROOT = "/cluster/work/users/mpo100/IM_NorESM/" ; override
-;OUTROOT = "/cluster/work/users/tylo/4NORWAY/IM_NorESM"
+; Pass as argument to script: CASE varsDIR outDIR
+
+;; CASE = "1985" ; year, override with script argument
+;; varsDIR = "/scratch/$USER/4NORWAY/"+CASE+"_intoNCL"
+;; outDIR  = "/scratch/$USER/4NORWAY"
 
 ;******************************************************************************
 ; Do not change anything below this line
 ;******************************************************************************
-;;;;;;;;;;;
-;;;;;;;;;;;
-varsDIR = OUTROOT+CASE+"_intoNCL/" 
-outDIR = OUTROOT+"OUTPUT_HIST/"
-;;;;;;;;;;;
-;;;;;;;;;;;
 
 if ( .not. isvar("CASE") ) then
   print("define the CASE")
   exit
 end if
-  
+
+if ( .not. isvar("varsDIR") ) then
+  print("define the varsDIR")
+  exit
+end if
+
+if ( .not. isvar("outDIR") ) then
+  print("define the outDIR")
+  exit
+end if
+
 if ( .not. isvar("IM_root_name") ) then
   IM_root_name = "NorESM2-MM"
 else
   IM_root_name = IM_root_name+"_"+CASE
-end if
-
-
-if ( .not. isvar("outDIR") ) then
-  outDIR = "OUTPUT"
 end if
 
 
@@ -56,42 +56,42 @@ end if
 ; file handling
 ;************************************************
   print("opening files")
-  in_ta    = addfile(varsDIR+"atmos_ta.nc","r")      ; 6-hourly 3-d T              
-  in_ua    = addfile(varsDIR+"atmos_ua.nc","r")      ; 6-hourly 3-d U                
-  in_va    = addfile(varsDIR+"atmos_va.nc","r")      ; 6-hourly 3-d V                  
-  in_hus   = addfile(varsDIR+"atmos_hus.nc","r")     ; 6-hourly 3-d Q                   
-  in_ps    = addfile(varsDIR+"atmos_ps.nc","r")      ; 6-hourly surface pressure
-  in_ts    = addfile(varsDIR+"atmos_ts.nc","r")    ; 6-hourly surface/skin temp !! (monthly in orig. script)
-  in_zsfc  = addfile("/cluster/projects/nn9280k/4NORWAY/IM_NorESM/zsfc.nc","r")    ; static surface geopotential        
-  in_lmask = addfile(varsDIR+"atmos_lmask.nc","r")   ; static land mask
-  in_snw   = addfile(varsDIR+"atmos_snw.nc","r")   ; monthly snow water equivalent (SWE) 
-  in_mrlsl = addfile(varsDIR+"atmos_mrlsl.nc","r") ; monthly soil moisture 
-  in_tsl   = addfile(varsDIR+"atmos_tsl.nc","r")   ; monthly soil temp 
-  in_hy    = addfile("/cluster/projects/nn9280k/4NORWAY/IM_NorESM/hybrid.nc","r")      ; hybrid mid-point and interface points (Muralidhar)
-  in_sst    = addfile(varsDIR+"atmos_sst.nc","r") 
-  in_sic    = addfile(varsDIR+"atmos_sic.nc","r") 
+  in_ta    = addfile(varsDIR+"/atmos_ta.nc","r")    ; 6-hourly 3-d T              
+  in_ua    = addfile(varsDIR+"/atmos_ua.nc","r")    ; 6-hourly 3-d U                
+  in_va    = addfile(varsDIR+"/atmos_va.nc","r")    ; 6-hourly 3-d V                  
+  in_hus   = addfile(varsDIR+"/atmos_hus.nc","r")   ; 6-hourly 3-d Q                   
+  in_ps    = addfile(varsDIR+"/atmos_ps.nc","r")    ; 6-hourly surface pressure
+  in_ts    = addfile(varsDIR+"/atmos_ts.nc","r")    ; 6-hourly surface/skin temp !! (monthly in orig. script)
+  in_zsfc  = addfile(varsDIR+"/zsfc.nc","r")        ; static surface geopotential        
+  in_lmask = addfile(varsDIR+"/atmos_lmask.nc","r") ; static land mask
+  in_snw   = addfile(varsDIR+"/atmos_snw.nc","r")   ; monthly snow water equivalent (SWE) 
+  in_mrlsl = addfile(varsDIR+"/atmos_mrlsl.nc","r") ; monthly soil moisture 
+  in_tsl   = addfile(varsDIR+"/atmos_tsl.nc","r")   ; monthly soil temp 
+  in_hy    = addfile(varsDIR+"/hybrid.nc","r")      ; hybrid mid-point and interface points (Muralidhar)
+  in_sst   = addfile(varsDIR+"/atmos_sst.nc","r") 
+  in_sic   = addfile(varsDIR+"/atmos_sic.nc","r") 
 ;************************************************
 ; read needed variables from file
 ;************************************************
   print("read variables in")
 
-  time   = in_ta->time                            
+  time = in_ta->time
   P0 = 1000.       ; value of P0 is 1000.(units=hPa); it is used in both Pa and hPa units below depending on function
   lon = in_ta->lon
   lat = in_ta->lat
 
-  T = in_ta->T(:,::-1,:,:)                               
-  U = in_ua->U(:,::-1,:,:)                          
-  V = in_va->V(:,::-1,:,:)                     
-  Q = in_hus->Q(:,::-1,:,:)  ; converts top-bottom data to bottom-top, Marie             
+  T = in_ta->T(:,::-1,:,:)
+  Q = in_hus->Q(:,::-1,:,:)  ; converts top-bottom data to bottom-top, Marie
+  ;; U = in_ua->U(:,::-1,:,:)
+  ;; V = in_va->V(:,::-1,:,:)
   
-  ;T = in_ta->T(:,:,:,:)  ; if data is bottom-top   ;Marie 
-  ;U = in_ua->U(:,:,:,:)  ; if data is bottom-top                        
-  ;V = in_va->V(:,:,:,:)  ; if data is bottom-top                   
-  ;Q = in_hus->Q(:,:,:,:)  ; if data is bottom-top
+  ;; T = in_ta->T(:,:,:,:)  ; if data is bottom-top   ;Marie
+  ;; Q = in_hus->Q(:,:,:,:) ; if data is bottom-top
+  ;; U = in_ua->U(:,:,:,:)  ; if data is bottom-top               
+  ;; V = in_va->V(:,:,:,:)  ; if data is bottom-top
 
-                  
-  ;LMASK= in_lmask->LANDMASK*1.0
+
+  ;; LMASK= in_lmask->LANDMASK*1.0
   LFRAC= in_lmask->landfrac    ;Marie
   LMASK= where(LFRAC.lt.0.5,0,1)  ; Marie
   
@@ -111,8 +111,8 @@ end if
   hyai = in_hy->hyai(::-1)                            
   hybi = in_hy->hybi(::-1)                      
 ;---
-  ;print(hyai)
-  ;print(hybi)
+  ;; print(hyai)
+  ;; print(hybi)
 
 ; get dimensions from dummy variable
   dsizes_x = dimsizes(T)
@@ -151,12 +151,12 @@ end if
   SOILD = (/0.01, 0.04, 0.09, 0.16, 0.26, 0.4, 0.58, 0.8, 1.06, 1.36, 1.7, \ 
     2.08, 2.5, 2.99, 3.58, 4.27, 5.06, 5.95, 6.94, 8.03/) ; removed 5 layers to get the right size of variable, depth not so important Marie
    
- ; SOILD = (/0.01, 0.04, 0.09, 0.16, 0.26, 0.4, 0.58, 0.8, 1.06, 1.36, 1.7, \ 
- ;   2.08, 2.5, 2.99, 3.58, 4.27, 5.06, 5.95, 6.94, 8.03, 9.795, \
- ;   13.3277669529664, 19.4831291701244, 28.870724434316, 41.9984368640029/) 
- ; print("SOILD "+dimsizes(SOILD))
- ; SOILD = in_mrlsl->levsoi    ;levgrnd
-  ;SOILD = in_mrlsl->depth
+ ;; SOILD = (/0.01, 0.04, 0.09, 0.16, 0.26, 0.4, 0.58, 0.8, 1.06, 1.36, 1.7, \ 
+ ;;   2.08, 2.5, 2.99, 3.58, 4.27, 5.06, 5.95, 6.94, 8.03, 9.795, \
+ ;;   13.3277669529664, 19.4831291701244, 28.870724434316, 41.9984368640029/) 
+ ;; print("SOILD "+dimsizes(SOILD))
+ ;; SOILD = in_mrlsl->levsoi    ;levgrnd
+ ;; SOILD = in_mrlsl->depth
 
 ;convert MSOIL from kg m-2 to fraction
   MSOILL = doubletofloat(MSOIL/(1000.*conform(MSOIL,SOILD,1)))
@@ -172,7 +172,7 @@ end if
 ; they are not very important because they get spun up anyway...
   TSKIN6   = TSKIN ; TSKIN is originally 6-hourly in my case
 
- ;TSKIN6   = PS ; dummy
+  ;; TSKIN6   = PS ; dummy
   SNOWW6   = PS ; dummy
   TSOIL1_6 = PS ; dummy 
   TSOIL2_6 = PS ; dummy
@@ -314,10 +314,6 @@ end if
   MSOIL3_6 = where (ismissing(MSOIL3_6), -1.E30, MSOIL3_6)
   MSOIL4_6 = where (ismissing(MSOIL4_6), -1.E30, MSOIL4_6)
 
-
-; Get bottom level temperature for vertical extrapolation
-  TBOT = T(:,0,:,:) 
-
 ; Calculate geopotential height
   print ("calculate Z")
   TV = T
@@ -325,6 +321,7 @@ end if
   Z = T
   Z = cz2ccm(PS,PHIS,TV(:,::-1,:,:),P0*100.,hyam,hybm,hyai,hybi)
   Z = Z(:,::-1,:,:) ;reorder vertical so consistent with T,U,V, and Q (bottom up)
+  delete(TV)
 
 ; Calculate the pressures on each hybrid level (bottom up)
   print ("calculate P")
@@ -335,7 +332,9 @@ end if
   print("calculate RH")
   R = T
   R = relhum(T,Q,P)
-  R = where(R.gt.100.0, 100.0, R)
+  print("truncate RH < 100")
+  ;; R = where(R.gt.100.0, 100.0, R)
+  R = R < 100.0
 
 ; Calculate near surface variables (do this instead of take from files do to greater availability of 3d)
 ; linearly extrapolate T2 in log(P) from 2 lowest hybrid levels)
@@ -348,7 +347,11 @@ end if
   T2 = PS
   T2 = T(:,1,:,:)-(T(:,1,:,:)-T(:,0,:,:))*((log(PS)-log(P(:,1,:,:)))/(log(P(:,0,:,:))-log(P(:,1,:,:))))
   R2 = R(:,0,:,:)
+
+  U = in_ua->U(:,::-1,:,:)
   U10 = doubletofloat(U(:,0,:,:)*((10./(Z(:,0,:,:)-conform(PS,ZSFC,(/1,2/))))^0.145))
+
+  V = in_va->V(:,::-1,:,:)
   V10 = doubletofloat(V(:,0,:,:)*((10./(Z(:,0,:,:)-conform(PS,ZSFC,(/1,2/))))^0.145))
 
 
@@ -506,6 +509,10 @@ end if
   DESC_ZSFC     ="Terrain Elevation"
 
 
+; Get bottom level temperature for vertical extrapolation
+  TBOT = T(:,0,:,:) 
+
+
 ; Loop through each time period - do final calculations and write data to the IM format
   do TIM = 0,ntim-1 
 
@@ -513,11 +520,10 @@ end if
     OFILE = IM_root_name+":" + cd_string(time(TIM), date_format2)      ; figure the output file name so that we can clobber it
     yyyy  = cd_string(time(TIM), yyyy_format)                          ; figure out the year so that we can make directories
     print("HDATE= " + HDATE)
-    system ("mkdir -p " + outDIR + "/" + yyyy)	               	       ; make the output directories
-    ;system ("mkdir -p " + outDIR)	               	       ; make the output directories
-    system ("rm " + OFILE)                                             ; delete the file, so that we don't append to an existing file
-    ;system ("rm " + outDIR + "/" + OFILE)                   ; delete the file, so that we don't append to an existing file
-    system ("rm " + outDIR + "/" +yyyy+ "/" + OFILE)                   ; delete the file, so that we don't append to an existing file
+    ;; system ("mkdir -p " + outDIR)	               	               ; make the output directories
+    ;; system ("rm -f " + outDIR+"/"+OFILE)                            ; delete the file, so that we don't append to an existing file
+    system ("mkdir -p " + outDIR+"/"+yyyy+"_outHIST")                  ; make the output directories
+    system ("rm -f " + outDIR+"/"+yyyy+"_outHIST/"+OFILE +" "+ OFILE)  ; delete the file, so that we don't append to an existing file
 
 
     ; calculate 3-d variables on pressure levels (need to do this here because ncl doesn't like multiple times)
@@ -585,16 +591,16 @@ end if
     end do 
 
     ; move the file to the outDIR directory
-;      print ("mv " + OFILE + "   " + outDIR + "/.")
-;      system ("mv " + OFILE + "   " + outDIR + "/.")
-      print ("mv " + OFILE + "   " + outDIR + "/" +yyyy+ "/.")
-      system ("mv " + OFILE + "   " + outDIR + "/" +yyyy+ "/.")
-      print("  ")
+    print("mv " + OFILE + "   " + outDIR + "/.")
+    system("mv " + OFILE + "   " + outDIR + "/.")
+    ;; print("mv " + OFILE + "   " + outDIR + "/" +yyyy+ "/.")
+    ;; system("mv " + OFILE + "   " + outDIR + "/" +yyyy+ "/.")
+    ;; print("  ")
 
-     delete(HDATE)
-     delete(OFILE)
+    delete(HDATE)
+    delete(OFILE)
   end do 
 
-;system ("rm -rf "+CASE+"_intoNCL") ; delete extracted variables dir
-print("Done")
+  ;; system ("rm -rf "+varsDIR) ; delete extracted variables dir
+  print("Done")
 end

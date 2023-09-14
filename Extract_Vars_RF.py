@@ -19,8 +19,8 @@ era = "20_thc"
 ##name = "k0100pi082k" # directory name / file name beginning 
 year_str = sys.argv[1] # skip the leading zero (it will be added by the script), avoid quotes
                        # "0"+str(year) # year string, do not change this
-workdir = sys.argv[2]  # e.g. /scratch/<user>/<project>
-outdir = workdir+"/"+year_str+"_intoNCL/"  # folder in work where files are written
+#outdir = "/scratch/<user>/<project>/"+year_str+"_intoNCL"  # folder in work where files are written
+outdir = sys.argv[2]
 #########
 
 
@@ -35,7 +35,7 @@ lim_e = "315.0"
 #to be modified only when file locations/names change 
 print("creating the directory and moving the extracted files into it...")
 os.makedirs(outdir, exist_ok=True)
-#dir_extr = outdir+year_str+"_intoNCL"
+#dir_extr = outdir+"/"+year_str+"_intoNCL"
 #os.makedirs(dir_extr, exist_ok=True)
 
 noresm_cases = "/projects/NS9560K/noresm/cases/"
@@ -50,23 +50,23 @@ file_ext_month = noresm_exp+".clm2.h0."+year_str+"-??-??-00000.nc"
 name_6hr_orig = file_ext_6hr
 name_day_orig = file_ext_day
 name_month_orig = file_ext_month
-name_6hr = outdir+"file_6hr.nc" # preprocessed 6-hr file name (user-defined)  
-name_month = outdir+"file_month.nc" # preprocessed month file name (user-defined)  
+name_6hr = outdir+"/file_6hr.nc" # preprocessed 6-hr file name (user-defined)  
+name_month = outdir+"/file_month.nc" # preprocessed month file name (user-defined)  
 
-name_ta = outdir+"atmos_ta.nc" # 3-d temp file name (user-defined)
-name_ua = outdir+"atmos_ua.nc" # 3-d u wind file name (user-defined)
-name_va = outdir+"atmos_va.nc" # 3-d v wind file name (user-defined)
-name_hus = outdir+"atmos_hus.nc" # 3-d specific humidity file name (user-defined)
-name_ps = outdir+"atmos_ps.nc" # surface pressure file name (user-defined)
-name_ts = outdir+"atmos_ts.nc" # surface temp file name (user-defined)
-name_hybrid = outdir+"hybrid.nc" # static hybrid level coefs file name (user-defined)
+name_ta = outdir+"/atmos_ta.nc" # 3-d temp file name (user-defined)
+name_ua = outdir+"/atmos_ua.nc" # 3-d u wind file name (user-defined)
+name_va = outdir+"/atmos_va.nc" # 3-d v wind file name (user-defined)
+name_hus = outdir+"/atmos_hus.nc" # 3-d specific humidity file name (user-defined)
+name_ps = outdir+"/atmos_ps.nc" # surface pressure file name (user-defined)
+name_ts = outdir+"/atmos_ts.nc" # surface temp file name (user-defined)
+name_hybrid = outdir+"/hybrid.nc" # static hybrid level coefs file name (user-defined)
 
-name_lm = outdir+"atmos_lmask.nc" # landmask file name (user-defined)
-name_sm = outdir+"atmos_mrlsl.nc" # soil moist file name (user-defined)
-name_tsl = outdir+"atmos_tsl.nc" # soil temp file name (user-defined)
-name_snw = outdir+"atmos_snw.nc" #
-name_sst = outdir+"atmos_sst.nc"
-name_sic = outdir+"atmos_sic.nc"
+name_lm = outdir+"/atmos_lmask.nc" # landmask file name (user-defined)
+name_sm = outdir+"/atmos_mrlsl.nc" # soil moist file name (user-defined)
+name_tsl = outdir+"/atmos_tsl.nc" # soil temp file name (user-defined)
+name_snw = outdir+"/atmos_snw.nc" #
+name_sst = outdir+"/atmos_sst.nc"
+name_sic = outdir+"/atmos_sic.nc"
 #######
 ########
 ########
@@ -118,30 +118,31 @@ surf_geo_again = False #True # create surface geopot field/file (zsfc) again? no
 ### if we are extracting the static surface geopot field ###
 ############################
 if surf_geo_again: 
- print("will extract static surface geopot field!")
- raw_file_zsfc = dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc" # file from which zsfc will be extracted 
- name_zsfc = outdir+"zsfc.nc"# static surface geopot file name (user-defined)
- 
- extract_command_zsfc = "cdo select,name=PHIS "+raw_file_zsfc+" "+name_zsfc
- print("extracting static surface geopot field...")
- os.system(extract_command_zsfc) # 
-# window_command_zsfc = "ncks -O -d lat,"+lim_s+","+lim_n+" -d lon,"+lim_w+","+lim_e+" "+name_zsfc+" "+name_zsfc
-# print("windowing static surface geopot field...")
-# os.system(window_command_zsfc) # 
-# neglon_command_zsfc = "ncap2 -O -s 'where(lon>180) lon=lon-360' "+name_zsfc+" "+name_zsfc
-# print("converting wrapped lons to negative lons, static surface geopot field...")
-# os.system(neglon_command_zsfc) # 
- avg_command_zsfc = "ncwa -O -a time "+name_zsfc+" "+name_zsfc # We should average over "time" dimension as there is just 1 time for this static field, otherwise CDO looks for the other times and issues errors.
- print("averaging over time, static surface geopot field...")
- os.system(avg_command_zsfc) # 
- set_attr_command_zsfc = 'ncatted -O -a standard_name,PHIS,c,c,"surface_geopotential" '+name_zsfc+' '+name_zsfc # In order for CDO to recognize the "surface geopotential" field, the standard_name attribute of the variable (PHIS here) should be set as "surface_geopotential"
- print("setting the standard name attribute, static surface geopot field...")
- os.system(set_attr_command_zsfc) # 
- extr_hybrid_command = "cdo -select,name=hyai,hyam,hybi,hybm,ilev "+dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc "+name_hybrid # extract surface temp
- print("extracting static hybrid level coefs into separate file...")
- os.system(extr_hybrid_command) 
+    print("will extract static surface geopot field!")
+    raw_file_zsfc = dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc" # file from which zsfc will be extracted 
+    name_zsfc = outdir+"/zsfc.nc"# static surface geopot file name (user-defined)
+
+    extract_command_zsfc = "cdo select,name=PHIS "+raw_file_zsfc+" "+name_zsfc
+    print("extracting static surface geopot field...")
+    os.system(extract_command_zsfc) # 
+    # window_command_zsfc = "ncks -O -d lat,"+lim_s+","+lim_n+" -d lon,"+lim_w+","+lim_e+" "+name_zsfc+" "+name_zsfc
+    # print("windowing static surface geopot field...")
+    # os.system(window_command_zsfc) # 
+    # neglon_command_zsfc = "ncap2 -O -s 'where(lon>180) lon=lon-360' "+name_zsfc+" "+name_zsfc
+    # print("converting wrapped lons to negative lons, static surface geopot field...")
+    # os.system(neglon_command_zsfc) # 
+    avg_command_zsfc = "ncwa -O -a time "+name_zsfc+" "+name_zsfc # We should average over "time" dimension as there is just 1 time for this static field, otherwise CDO looks for the other times and issues errors.
+    print("averaging over time, static surface geopot field...")
+    os.system(avg_command_zsfc) # 
+    set_attr_command_zsfc = 'ncatted -O -a standard_name,PHIS,c,c,"surface_geopotential" '+name_zsfc+' '+name_zsfc # In order for CDO to recognize the "surface geopotential" field, the standard_name attribute of the variable (PHIS here) should be set as "surface_geopotential"
+    print("setting the standard name attribute, static surface geopot field...")
+    os.system(set_attr_command_zsfc) # 
+    extr_hybrid_command = "cdo -select,name=hyai,hyam,hybi,hybm,ilev "+dir_6hr_day+noresm_exp+".cam.h3.1991-01-01-21600.nc "+name_hybrid # extract surface temp
+    print("extracting static hybrid level coefs into separate file...")
+    os.system(extr_hybrid_command) 
 else:
- print("will NOT extract static surface geopotential and static hybrid levels!")
+    print("will NOT extract static surface geopotential and static hybrid levels!")
+
 ############################
 ############################
 ##########################

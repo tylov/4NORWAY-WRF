@@ -24,10 +24,13 @@ set -o nounset # Treat unset variables as errors
 
 set -xve
 
+# NB!!! RUN THIS ON ipcc.nird.sigma2.no ONLY !!!
+
 module purge 
-module load NCL/6.5.0-intel-2018a
+# module load NCL/6.5.0-intel-2018a
 # module load NCL/6.6.2-intel-2019b # betzy - not working with bigmem
+module load NCL/6.6.2-intel-2020a
 
 #WDIR=/cluster/work/users/$USER/IM_NorESM
 #cd $WDIR
-ncl Hybrid_To_Pres_new.ncl CASE=\"$1\" OUTROOT=\"$2\" > log-Hybrid_To_Pres_new-$1.txt
+ncl Hybrid_To_Pres_new.ncl CASE=\"$1\" varsDIR=\"$2\" outDIR=\"$3\" > log-Hybrid_To_Pres-$1.txt
