@@ -30,17 +30,19 @@ shift
 
 user=$USER
 proj=4NORWAY-WRF
+IM=IM_NorESM
 
 nird_home=/nird/home/$user
 nird_input=$nird_home/proj/4NORWAY-input
 nird_proj=$nird_home/proj/4NORWAY-WRF
 nird_work=/scratch/$user/4NORWAY
 betzy_work=/cluster/work/users/$user/4NORWAY
-IM=IM_NorESM
+norce_work=/cluster/work/users/$user/4NORWAY
 
 betzy=login-1.betzy.sigma2.no
 nird=login0.nird.sigma2.no
 ipcc=ipcc.nird.sigma2.no
+norce=login-1.hpc.intra.norceresearch.no
 
 #fram=login-1.fram.sigma2.no
 #fram_work=/cluster/work/users/$user/4NORWAY
@@ -70,7 +72,7 @@ for (( year=$start_year; year<=$end_year; ++year )); do
         #ssh $user@$ipcc "cd $nird_work ; sh ./run_ncl.sh $year ${year}_intoNCL ${year}_outHIST"
         ssh $user@$ipcc "cd $nird_work ; nohup nice sh ./run_ncl.sh $year ${year}_intoNCL ${year}_outHIST >run_ncl-$year.log 2>&1 < /dev/null &"
         ;;
-    3)
+    3betzy)
         echo -- 3. NIRD: Copy output from NCL-script to BETZY:
         # Input:  NIRD:  /scratch/tylo/4NORWAY/1984_outHIST/NorESM2-MM:1984-01-01_00
         # Output: BETZY: /cluster/work/users/tylo/4NORWAY/1984_outHIST/NorESM2-MM:1984-01-01_00
@@ -78,6 +80,15 @@ for (( year=$start_year; year<=$end_year; ++year )); do
         ssh $user@$betzy "mkdir -p $betzy_work"
         echo "scp -r $user@$nird:$nird_work/${year}_outHIST $user@$betzy:$betzy_work"
         nohup scp -r $user@$nird:$nird_work/${year}_outHIST $user@$betzy:$betzy_work 2>&1 < /dev/null &
+        ;;
+    3)
+        echo -- 3. NIRD: Copy output from NCL-script to NORCE HPC:
+        # Input:  NIRD:  /scratch/tylo/4NORWAY/1984_outHIST/NorESM2-MM:1984-01-01_00
+        # Output: NORCE: /cluster/work/users/tylo/4NORWAY/1984_outHIST/NorESM2-MM:1984-01-01_00
+        echo "mkdir -p $norce_work"
+        ssh $user@$norce "mkdir -p $norce_work"
+        echo "scp -3 -r $user@$nird:$nird_work/${year}_outHIST $user@$norce:$norce_work"
+        nohup scp -3 -r $user@$nird:$nird_work/${year}_outHIST $user@$norce:$norce_work 2>&1 < /dev/null &
         ;;
     4)
         echo -- 4. BETZY: run metgrid.exe
